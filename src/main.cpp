@@ -1,7 +1,7 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-int refDoSomething() 
+int getscreensize() 
 {
 	int x {};
 
@@ -12,7 +12,7 @@ int refDoSomething()
 
 int main()
 {
-	int num{ refDoSomething() };
-	
-	std::cout << num*2 << "\n";
+	int ss {getscreensize()};
+
+	std::cout << ss << '\n';
 }
