@@ -1,4 +1,4 @@
 @echo off
 
-application.exe
+Iapetus.exe
 pause
