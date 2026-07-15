@@ -1,4 +1,5 @@
 #include <iostream>
+#include <GLFW/glfw3.h>
 
 int main()
 {
@@ -10,6 +11,8 @@ int main()
 	std::cin >> x >> y;
 
 	std::cout << "You chose: " << x << " and " << y << "\n";
+
+	std::cout << sizeof(int);
 
     return 0;
 }
