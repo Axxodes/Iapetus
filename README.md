@@ -19,7 +19,7 @@ The .exe file is the application itself, you can run it with a command prompt or
 
 # Why the name Iapetus?
 
-The name comes from Iapetus, the Greek Titan and father of Prometheus.
+The name comes from Iapetus, the Greek Titan (Ιαπετός) and father of Prometheus.
 In this project, I like to think of you as Prometheus.
 Just as Prometheus brought fire to humanity, I hope Iapetus gives developers the tools to create games that push the industry forward.
 
