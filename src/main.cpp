@@ -1,18 +1,23 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-int getscreensize() 
+void error_callback(int error, const char* description)
 {
-	int x {};
-
-	std::cin >> x;
-
-	return x;
+    fprintf(stderr, "Error: %s\n", description);
 }
+
+
 
 int main()
 {
-	int ss {getscreensize()};
+	if (!glfwInit())
+{
+    // Initialization failed
+}
 
-	std::cout << ss << '\n';
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Iapetus game engine", NULL, NULL);
+	if (!window)
+	{
+    	// Window or OpenGL context creation failed
+	}
 }

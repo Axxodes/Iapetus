@@ -23,5 +23,9 @@ The name comes from Iapetus, the Greek Titan (Ιαπετός) and father of Prom
 In this project, I like to think of you as Prometheus.
 Just as Prometheus brought fire to humanity, I hope Iapetus gives developers the tools to create games that push the industry forward.
 
+# Side note
+
+This game engine is supposed to give you the best visuals i can get for a lightweight engine (it can get insanely good), might release a more bulky version of the game engine and a simpler one (to use) that allows for even more stunning visuals.
+
 ❤️ Happy developing.
 
