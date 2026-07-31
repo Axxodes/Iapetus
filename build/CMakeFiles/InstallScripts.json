@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/cmake_install.cmake",
+		"C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-build/cmake_install.cmake",
+		"C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-build/src/cmake_install.cmake",
+		"C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-build/docs/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

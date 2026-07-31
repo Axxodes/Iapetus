@@ -1,0 +1,40 @@
+# ninja log v7
+1	41	8066134196810421	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-mkdir	ba41de53dec618b4
+1	41	8066134196810421	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-mkdir	ba41de53dec618b4
+41	5590	8066134252291928	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-download	96b7781ee3d2fa02
+41	5590	8066134252291928	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-download	96b7781ee3d2fa02
+5590	5675	8066134252334117	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-update	2eb1ad58c334c91b
+5676	5714	8066134253541488	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-patch	1e3bfaefd9cc88b2
+5676	5714	8066134253541488	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-patch	1e3bfaefd9cc88b2
+5714	5754	8066134253931391	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-configure	319e84f3ba568a88
+5714	5754	8066134253931391	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-configure	319e84f3ba568a88
+5754	5794	8066134254332282	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-build	42cf794675d4b32e
+5754	5794	8066134254332282	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-build	42cf794675d4b32e
+5794	5833	8066134254728820	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-install	1f5f28d462dccce4
+5794	5833	8066134254728820	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-install	1f5f28d462dccce4
+5833	5874	8066134255131046	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-test	7cca538680129d3e
+5833	5874	8066134255131046	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-test	7cca538680129d3e
+5874	5927	8066134255670121	CMakeFiles/glfw-populate-complete	c5413b7c75cbd320
+5874	5927	8066134255670121	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-done	c5413b7c75cbd320
+5874	5927	8066134255670121	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/CMakeFiles/glfw-populate-complete	c5413b7c75cbd320
+5874	5927	8066134255670121	C:/Users/Gamer/Documents/vscode scripts/iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-done	c5413b7c75cbd320
+1	45	8072199611927356	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-mkdir	5c97bf4905a541a8
+1	45	8072199611927356	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-mkdir	5c97bf4905a541a8
+45	82	8072199612292310	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-download	96b7781ee3d2fa02
+45	82	8072199612292310	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-download	96b7781ee3d2fa02
+82	159	8072199612332154	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-update	2eb1ad58c334c91b
+82	159	8072199612332154	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-update	2eb1ad58c334c91b
+159	199	8072199613468505	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-patch	12405f462c796a31
+159	199	8072199613468505	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-patch	12405f462c796a31
+199	237	8072199613846284	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-configure	319e84f3ba568a88
+199	237	8072199613846284	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-configure	319e84f3ba568a88
+237	272	8072199614202033	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-build	42cf794675d4b32e
+237	272	8072199614202033	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-build	42cf794675d4b32e
+272	307	8072199614549273	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-install	1f5f28d462dccce4
+272	307	8072199614549273	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-install	1f5f28d462dccce4
+307	343	8072199614907473	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-test	7cca538680129d3e
+307	343	8072199614907473	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-test	7cca538680129d3e
+343	394	8072199615418244	CMakeFiles/glfw-populate-complete	b75d2310cb6df40f
+343	394	8072199615418244	glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-done	b75d2310cb6df40f
+343	394	8072199615418244	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/CMakeFiles/glfw-populate-complete	b75d2310cb6df40f
+343	394	8072199615418244	C:/Users/Gamer/Documents/vscode scripts/Iapetus/build/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/glfw-populate-done	b75d2310cb6df40f
