@@ -5,7 +5,7 @@ I want to keep this as the main page for my game engine.
 
 # What is Iapetus?
 
-Iapetus is a c++ game engine with its main focus being optmisation: small file size, lightweight on cpu/gpu and relatively low RAM usage.
+Iapetus is a c++ game engine with its main focus being optimisation: small file size, lightweight on cpu/gpu and relatively low RAM usage.
 (You can use brainfuck for easier compression but i personally think this is a little extreme lol)
 
 # Why use Iapetus?
@@ -15,7 +15,7 @@ It allows for  lightweight games, so your game could theoretically run on a lite
 
 # How to use Iapetus?
 
-The .exe file is the application itself, you can run it with a command prompt or by double clicking it.\n // Build.bat and Run.bat should be ignored, they are to compile the engine with g++ (the exe file is the compiled version so it has to use for the user)
+The .exe file is the application itself, you can run it with a command prompt or by double clicking it.
 
 # Why the name Iapetus?
 
