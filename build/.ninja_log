@@ -1,5 +1,5 @@
 # ninja log v7
-83	736	8066135315931443	CMakeFiles/Iapetus.dir/src/main.cpp.obj	18066713d2844a0a
+4	220	8072249540417164	CMakeFiles/Iapetus.dir/src/main.cpp.obj	18066713d2844a0a
 40	1133	8066135315497342	_deps/glfw-build/src/CMakeFiles/glfw.dir/null_joystick.c.obj	b2efaa566c4287fc
 49	1135	8066135315585600	_deps/glfw-build/src/CMakeFiles/glfw.dir/win32_time.c.obj	fb27a3730d66ad77
 43	1142	8066135315528913	_deps/glfw-build/src/CMakeFiles/glfw.dir/win32_module.c.obj	382353311fa00994
