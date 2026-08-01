@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "math.hpp"
+#include "../libs/math.hpp"
 
 // #include <GLFW/glfw3.h>
 
@@ -10,7 +10,7 @@ class vector3
 	double x {};
 	double y {};
 	double z {};
-}
+};
 
 class color3
 {
@@ -27,13 +27,22 @@ class color3
 	std::string hexValue {};
 	
 	// actual array used by people
-	std::array<int, 3> bitValue {blue, red, green};
-}
+	std::array<int, 3> bitValue {{blue, red, green}};
+
+	int changeColor() 
+	{
+		if (bitValue.size == 6) 
+		{
+
+		}
+	}
+};
 
 class Part
 {
 	public:
 	std::string name {"Part"};
+	color3 color {};
 };
 
 int main()
