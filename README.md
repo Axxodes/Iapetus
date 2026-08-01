@@ -24,4 +24,3 @@ In this project, I like to think of you as Prometheus.
 Just as Prometheus brought fire to humanity, I hope Iapetus gives developers the tools to create games that push the industry forward.
 
 ❤️ Happy developing.
-

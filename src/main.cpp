@@ -29,11 +29,13 @@ class color3
 	// actual array used by people
 	std::array<int, 3> bitValue {{blue, red, green}};
 
-	int changeColor() 
+	int changeColor(r,g,b) 
 	{
 		if (bitValue.size == 6) 
 		{
-
+			bitValue[0] = r;
+			bitValue[1] = g;
+			bitValue[2] = b;
 		}
 	}
 };
@@ -43,6 +45,7 @@ class Part
 	public:
 	std::string name {"Part"};
 	color3 color {};
+	vector3 position {};
 };
 
 int main()
