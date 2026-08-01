@@ -1,23 +1,22 @@
 #include <iostream>
-#include <GLFW/glfw3.h>
+#include <string>
+// #include <GLFW/glfw3.h>
 
-void error_callback(int error, const char* description)
+class Part
 {
-    fprintf(stderr, "Error: %s\n", description);
-}
-
-
+	public:
+	std::string name {"Part"};
+};
 
 int main()
 {
-	if (!glfwInit())
-{
-    // Initialization failed
-}
-
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Iapetus game engine", NULL, NULL);
-	if (!window)
-	{
-    	// Window or OpenGL context creation failed
-	}
+	int* p = new int(5);
+	int& x {*p};
+	std::cout << x << "\n";
+	*p = 10;
+	std ::cout << x << "\n";
+	delete p;
+	p = nullptr;
+	
+	Part part;
 }

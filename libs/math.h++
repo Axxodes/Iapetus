@@ -1,36 +1,36 @@
-// just make it a fucking math library ong bro
 #ifndef MATH_OPERATIONS_H
 #define MATH_OPERATIONS_H
 
-double Sqrt(int Number, int Root)
-{
-    int j;
-    double i,k=1;
-    double incre = 0.001; 
-	// 0.01 starting value it is the accuurate value upto 2 decimal places choose 0.01 or 0.001 or so on
-	// the more the incre is lower the high the accuracy of root !
- 
-    for(i=1; i<=Number; i+=incre){ 
-        for(j=0;j<Root;j++){ 
-            k*=i;
+namespace Iapetus::Math{
+    double Power(double num, int power){
+        double result = 1;
+        for(int i = 0; i < power; i++)
+        {
+            result *= num;
         }
-        if(k>Number){ 
-            return (i-incre);
-            break;
-        }
-        else
-            k=1; 
+        return result;
     }
-}
-
-int poweroftwo(int num)
-{
-
-}
-
-int GetMagnitude2D(int x1, int y1, int x2, int y2) 
-{
-    return Sqrt(x2-x1)
+    double Root(double number, int root){
+        double guess = number / root;
+        for(int i = 0; i < 50; i++)
+        {
+            guess = ((root - 1) * guess + number / Power(guess, root - 1)) / root;
+        }
+        return guess;
+    }
+    int Squared(int num){
+        return num * num;
+    }
+    double Distance2D(int x1, int y1, int x2, int y2){
+        return Root(
+            Squared(x2-x1) + Squared(y2-y1),
+            2
+        );
+    }
+    double Distance3D(int x1, int y1, int z1,int x2, int y2, int z2)
+    {
+        return Root(Squared(x2-x1)+Squared(y2-y1)+Squared(z2-z1),2);
+    }
 }
 
 #endif
