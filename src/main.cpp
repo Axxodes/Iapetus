@@ -1,6 +1,34 @@
 #include <iostream>
 #include <string>
+#include "math.hpp"
+
 // #include <GLFW/glfw3.h>
+
+class vector3 
+{
+	public:
+	double x {};
+	double y {};
+	double z {};
+}
+
+class color3
+{
+	private:
+
+	// values for the 255-type colors
+	int red {};
+	int green {};
+	int blue {};
+
+	public:
+
+	// just store the hex value and shi
+	std::string hexValue {};
+	
+	// actual array used by people
+	std::array<int, 3> bitValue {blue, red, green};
+}
 
 class Part
 {
