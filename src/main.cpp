@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include "../libs/math.hpp"
+#include <array>
+#include "..libs/materialmanager.hpp"
 
 // #include <GLFW/glfw3.h>
 
@@ -10,6 +12,8 @@ class vector3
 	double x {};
 	double y {};
 	double z {};
+
+	std::array <double, 3> value {x,y,z};
 };
 
 class color3
@@ -27,16 +31,40 @@ class color3
 	std::string hexValue {};
 	
 	// actual array used by people
-	std::array<int, 3> bitValue {{blue, red, green}};
+	std::array<int, 3> bitValue {blue, red, green};
 
-	int changeColor(r,g,b) 
+	bool changeColor(int r,int g,int b) 
 	{
-		if (bitValue.size == 6) 
+		if (bitValue.size() == 3)
 		{
 			bitValue[0] = r;
 			bitValue[1] = g;
 			bitValue[2] = b;
+			return true;
 		}
+		else 
+		{
+			return false;
+		}
+	}
+
+	bool changeHexColor(std::string hexValueIn)
+	{
+	   if (hexValueIn.length() == 6) 
+	   {
+		int r = hexToInt(HexValueIn.substr(0, 2));
+   		int g = hexToInt(hexValueIn.substr(2, 2));
+    	int b = hexToInt(hexValueIn.substr(4, 2));
+
+		std::array<int,3> tempArr {r,g,b};
+		bitValue = tempArr;
+		hexValue = hexValueIn;
+		return false;
+	   }
+	   else
+	   {
+		return true;
+	   }
 	}
 };
 
@@ -50,13 +78,14 @@ class Part
 
 int main()
 {
-	int* p = new int(5);
-	int& x {*p};
-	std::cout << x << "\n";
-	*p = 10;
-	std ::cout << x << "\n";
-	delete p;
-	p = nullptr;
-	
 	Part part;
+
+	part.color.changeColor(255,255,255);
+
+	for (int value : part.color.bitValue)
+	{
+    	std::cout << value << ", ";
+	}
+
+	return 0;
 }
