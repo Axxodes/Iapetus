@@ -6,13 +6,15 @@
 #include "../libs/propertiesclasses.hpp"
 #include "../libs/objects.hpp"
 
-// #include <GLFW/glfw3.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 int main()
 {
-	Part part;
+	Part myPart;
 
-	part.color.changeColor(255,255,255);
+	myPart.color.changeColor(255,255,255);
+	myPart.color.print();
 
 	return 0;
 }

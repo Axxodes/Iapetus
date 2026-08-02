@@ -63,10 +63,10 @@ class color3
 
     std::string get()
     {
-        std::string output = ""
+        std::string output = "";
         for (int value : bitValue)
 	    {
-    	    output += std::to_string(value) + ", ";
+    	    output += std::to_string(value) + " ";
 	    }
         return output;
     }

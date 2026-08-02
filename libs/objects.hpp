@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <array>
 
 class Part
 {
@@ -6,4 +8,5 @@ class Part
 	std::string name {"Part"};
 	color3 color {};
 	vector3 position {};
+    std::array vertices {};
 };
