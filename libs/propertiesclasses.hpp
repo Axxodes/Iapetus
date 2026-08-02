@@ -17,7 +17,7 @@ class color3
 	std::string hexValue {};
 	
 	// actual array used by people
-	std::array<int, 3> bitValue {blue, red, green};
+	std::array<int,3> bitValue {blue, red, green};
 
 	bool changeColor(int r,int g,int b) 
 	{
@@ -38,7 +38,7 @@ class color3
 	{
 	   if (hexValueIn.length() == 6) 
 	   {
-		int r = hexToInt(HexValueIn.substr(0, 2));
+		int r = hexToInt(hexValueIn.substr(0, 2));
    		int g = hexToInt(hexValueIn.substr(2, 2));
     	int b = hexToInt(hexValueIn.substr(4, 2));
 
@@ -52,4 +52,22 @@ class color3
 		return true;
 	   }
 	}
+
+    void print()
+    {
+        for (int value : bitValue)
+	    {
+    	    std::cout << value << ", ";
+	    }
+    }
+
+    std::string get()
+    {
+        std::string output = ""
+        for (int value : bitValue)
+	    {
+    	    output += std::to_string(value) + ", ";
+	    }
+        return output;
+    }
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <array>
 
 class vector3 
 {
@@ -8,7 +9,7 @@ class vector3
 	double y {};
 	double z {};
 
-	std::array <double, 3> value {x,y,z};
+	std::array<double,3> Value {x,y,z};
 };
 
 inline double Power(double num, int power)

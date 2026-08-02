@@ -14,10 +14,5 @@ int main()
 
 	part.color.changeColor(255,255,255);
 
-	for (int value : part.color.bitValue)
-	{
-    	std::cout << value << ", ";
-	}
-
 	return 0;
 }
