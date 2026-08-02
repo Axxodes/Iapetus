@@ -8,5 +8,5 @@ class Part
 	std::string name {"Part"};
 	color3 color {};
 	vector3 position {};
-    std::array vertices {};
+    // std::array<std::array,8> vertices {};
 };

@@ -5,16 +5,15 @@
 #include "../libs/materialmanager.hpp"
 #include "../libs/propertiesclasses.hpp"
 #include "../libs/objects.hpp"
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "../libs/window.hpp"
 
 int main()
 {
-	Part myPart;
+	platform_create_window(1200,720,"Iapetus");
 
-	myPart.color.changeColor(255,255,255);
-	myPart.color.print();
-
+	while(running)
+	{
+		platform_update_window();
+	}
 	return 0;
 }
