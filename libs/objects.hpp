@@ -1,12 +1,13 @@
 #pragma once
 #include <string>
 #include <array>
+#include "renderer.hpp"
 
 class Part
 {
 	public:
 	std::string name {"Part"};
-	color3 color {};
-	vector3 position {};
+	Color3 color {};
+	Vector3 position {};
     // std::array<std::array,8> vertices {};
 };

@@ -1,15 +1,13 @@
 #include <iostream>
 #include <string>
-#include "math.hpp"
 #include <array>
 #include "materialmanager.hpp"
+#include "math.hpp"
 #include "propertiesclasses.hpp"
-#include "objects.hpp"
 #include "services.hpp"
-
-#include "renderer.hpp"
+#include "window.hpp"
 
 int main()
 {
-	initialise_window(1200,720);
+    initialise_window(750,400);
 }

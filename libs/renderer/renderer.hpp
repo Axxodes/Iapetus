@@ -6,17 +6,45 @@
 #include "window.hpp"
 #include <windows.h>
 
-void initialise_window(int x, int y)
+struct Vector3 
 {
-    platform_create_window(x,y,"Iapetus");
+	double x {};
+	double y {};
+	double z {};
 
-	while(running)
-	{
-		platform_update_window();
-	}
+	std::array<double,3> Value {x,y,z};
+
+    void changeVector(double xIn,double yIn,double zIn)
+    {
+        x = xIn;
+        y = yIn;
+        z = zIn;
+    }
+    void changeX(double xIn)
+    {
+        x = xIn;
+    }
+    void changeY(double yIn)
+    {
+        y = yIn;
+    }
+    void changeZ(double zIn)
+    {
+        z = zIn;
+    }
+};
+
+Vector3 dotProduct(Vector3 vec1, Vector3 vec2)
+{
+    Vector3 output {};
+    output.changeX(vec1.x*vec2.x);
+    output.changeY(vec1.y*vec2.y);
+    output.changeZ(vec1.z*vec2.z);
+    return output;
 }
 
-/*bool start_renderer()
+class Vertex
 {
-    
-} */
+    public:
+    Vector3 position{};
+};

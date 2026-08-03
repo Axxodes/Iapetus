@@ -20,12 +20,12 @@ struct BumpAllocator
     char* memory;
 };
 
+BumpAllocator ba = {};
+
 #define SM_ERROR(fmt, ...) \
     fprintf(stderr, fmt "\n", __VA_ARGS__)
 BumpAllocator make_bump_allocator(size_t size)
 {
-    BumpAllocator ba = {};
-
     ba.memory = (char*)malloc(size);
     if(ba.memory)
     {
@@ -190,6 +190,11 @@ bool copy_file(char* fileName, char* outputName, BumpAllocator* bumpAllocator)
     }
 
     return file;
+}
+
+void cleanup()
+{
+    free(ba.memory);
 }
 
 }

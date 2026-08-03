@@ -2,16 +2,6 @@
 #include <string>
 #include <array>
 
-class vector3 
-{
-	public:
-	double x {};
-	double y {};
-	double z {};
-
-	std::array<double,3> Value {x,y,z};
-};
-
 inline double Power(double num, int power)
 {
     double result = 1;

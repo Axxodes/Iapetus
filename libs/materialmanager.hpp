@@ -4,7 +4,7 @@
 #include <fstream>
 #include <iostream>
 
-class material 
+class Material 
 {
 	public:
 	std::string name {};

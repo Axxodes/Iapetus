@@ -2,7 +2,7 @@
 #include <array>
 #include <string>
 
-class color3
+class Color3
 {
 	private:
 
