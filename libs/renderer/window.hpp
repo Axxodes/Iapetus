@@ -15,15 +15,31 @@
 static HWND window;
 static bool running = true;
 
+HWND textbox;
+
+#include <iostream>
+
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 										 WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result = 0;
 	switch(msg)
 	{
+		case WM_CREATE:
+		{
+		textbox = CreateWindow("EDIT","",WS_BORDER | WS_CHILD | WS_VISIBLE, 10, 10, 300, 20, window, NULL, NULL, NULL);
+		break;
+		}
+
 		case WM_CLOSE:
 		{
 			running = false;
+			break;
+		}
+
+		case WM_KEYDOWN:
+		{
+			std::cout << "Yo, you pressed key: " << wParam << "\n";
 			break;
 		}
 
