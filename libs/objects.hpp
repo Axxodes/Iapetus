@@ -10,9 +10,15 @@ class Part
 	Color3 color {};
 	Vector3 position {};
     private:
-	std::array<Vertex,8> vertices {Vertex vertex1{},Vertex vertex2{},Vertex vertex3{},Vertex vertex4{},
-								  Vertex vertex5{},Vertex vertex6{},Vertex vertex7{},Vertex vertex8{}
-								  };
+	Vertex vertex1{};
+	Vertex vertex2{};
+	Vertex vertex3{};
+	Vertex vertex4{};
+	Vertex vertex5{};
+	Vertex vertex6{};
+	Vertex vertex7{};
+	Vertex vertex8{};
+	std::array<Vertex,8> vertices {vertex1,vertex2,vertex3,vertex4,vertex5,vertex6,vertex7,vertex8};
 };
 
 class Plane
@@ -22,5 +28,9 @@ class Plane
 	Color3 color {};
 	Vector3 position {};
 	private:
-	std::array<Vertex,8> vertices {Vertex vertex1{},Vertex vertex2{},Vertex vertex3{},Vertex vertex4{}};
+	Vertex vertex1{};
+	Vertex vertex2{};
+	Vertex vertex3{};
+	Vertex vertex4{};
+	std::array<Vertex,8> vertices {vertex1,vertex2,vertex3,vertex4};
 };

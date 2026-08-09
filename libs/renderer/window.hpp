@@ -1,4 +1,5 @@
-// NO shoutout to spider
+// NO shoutout to spiderbat229
+#pragma once
 
 #ifdef _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
@@ -14,14 +15,14 @@
 
 #include <string>
 
+#include "display.hpp"
+
 static HWND window;
 static bool running = true;
 
 HWND textbox;
 
 #include <iostream>
-
-LPSTR lpString;
 
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 										 WPARAM wParam, LPARAM lParam)
@@ -42,6 +43,16 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 
 		case WM_KEYDOWN:
 		{
+			if(wParam == VK_SHIFT)
+			{
+				HDC subwindow = GetDC(window);
+				Color3 color {};
+				color.changeColor(255,0,0);
+				for (int i=1;i>=50;i++)
+				{
+					setPixelOnScreen(subwindow,i,50,color);
+				}
+			} 
 			break;
 		}
 

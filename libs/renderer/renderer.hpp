@@ -1,16 +1,16 @@
 #pragma once
 
 #include "math.hpp"
-#include "objects.hpp"
 #include "propertiesclasses.hpp"
-#include "window.hpp"
 #include <windows.h>
+#include "objects.hpp"
 
 // Incase this ever changes
-double pi {3.141592653589793};
+constexpr double pi {3.141592653589793};
 
-struct Vector3 
+class Vector3 
 {
+    public:
 	double x {};
 	double y {};
 	double z {};
@@ -49,9 +49,9 @@ Vector3 vectorDotProduct(Vector3 vec1, Vector3 vec2)
 Vector3 vectorAdd(Vector3 vec1, Vector3 vec2)
 {
     Vector3 output{};
-    output.changeX(vec1.x+vec2.x)
-    output.changeY(vec1.y+vec2.y)
-    output.changeZ(vec1.z+vec2.z)
+    output.changeX(vec1.x+vec2.x);
+    output.changeY(vec1.y+vec2.y);
+    output.changeZ(vec1.z+vec2.z);
     return output;
 }
 
