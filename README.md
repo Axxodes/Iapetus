@@ -6,7 +6,8 @@ I want to keep this as the main page for my game engine.
 # What is Iapetus?
 
 Iapetus is a c++ game engine with its main focus being optmisation: small file size, lightweight on cpu/gpu and relatively low RAM usage.
-(You can use brainfuck for easier compression but i personally think this is a little extreme lol)
+
+The renderer that we use is custom made and is called 'Hyperion' (Ὑπερίων, being the Greek titan of light).
 
 # Why use Iapetus?
 
