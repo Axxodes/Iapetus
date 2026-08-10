@@ -15,7 +15,8 @@
 
 #include <string>
 
-#include "display.hpp"
+#include "renderer.hpp"
+#include "rendererclasses.hpp"
 
 static HWND window;
 static bool running = true;
@@ -47,11 +48,12 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			{
 				HDC subwindow = GetDC(window);
 				Color3 color {};
-				color.changeColor(255,0,0);
-				for (int i=0;i<10;i++)
-				{
-				setPixelOnScreen(subwindow,50+i,50,color);
-				}
+				color.changeColor(0,0,0);
+				Vector2 vec1 {};
+				vec1.changeVector(50,50);
+				Vector2 vec2 {};
+				vec2.changeVector(750,65);
+				drawLine(subwindow,vec1,vec2,color);
 			} 
 			break;
 		}

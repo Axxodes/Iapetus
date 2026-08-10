@@ -1,62 +1,44 @@
 #pragma once
-
-#include "math.hpp"
 #include "propertiesclasses.hpp"
+#include "rendererclasses.hpp"
 #include <windows.h>
+#include <cmath>
 #include "objects.hpp"
 
-// Incase this ever changes
-constexpr double pi {3.141592653589793};
-
-class Vector3 
+void setPixelOnScreen(HDC window, int x, int y, Color3 color)
 {
-    public:
-	double x {};
-	double y {};
-	double z {};
-
-	std::array<double,3> Value {x,y,z};
-
-    void changeVector(double xIn,double yIn,double zIn)
-    {
-        x = xIn;
-        y = yIn;
-        z = zIn;
-    }
-    void changeX(double xIn)
-    {
-        x = xIn;
-    }
-    void changeY(double yIn)
-    {
-        y = yIn;
-    }
-    void changeZ(double zIn)
-    {
-        z = zIn;
-    }
-};
-
-Vector3 vectorDotProduct(Vector3 vec1, Vector3 vec2)
-{
-    Vector3 output {};
-    output.changeX(vec1.x*vec2.x);
-    output.changeY(vec1.y*vec2.y);
-    output.changeZ(vec1.z*vec2.z);
-    return output;
+    COLORREF Color = RGB(color.bitValue[0],color.bitValue[1],color.bitValue[2]);
+    SetPixel(window,x,y,Color);
 }
 
-Vector3 vectorAdd(Vector3 vec1, Vector3 vec2)
+void generateCircle(HDC subwindow, int radius, Color3 color)
 {
-    Vector3 output{};
-    output.changeX(vec1.x+vec2.x);
-    output.changeY(vec1.y+vec2.y);
-    output.changeZ(vec1.z+vec2.z);
-    return output;
+    for (int i=0;i<10;i++)
+	{
+		setPixelOnScreen(subwindow,50+i,50,color);
+	}
 }
 
-class Vertex
+void drawLine(HDC window, Vector2 vec1, Vector2 vec2, Color3 color)
 {
-    public:
-    Vector3 position{};
-};
+    double m = static_cast<double>(vec2.y - vec1.y) /
+               static_cast<double>(vec2.x - vec1.x);
+
+    double c = vec1.y - m * vec1.x;
+
+    for (int x = vec1.x; x <= vec2.x; x++)
+    {
+        int y = static_cast<int>(round(m * x + c));
+        setPixelOnScreen(window, x, y, color);
+    }
+}
+
+void drawCube(HDC window, Vector2 rootPos, Color3 color)
+{
+
+}
+
+void drawSine(HDC window,Color3 color)
+{
+    
+}
