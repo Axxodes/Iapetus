@@ -52,7 +52,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 				Vector2 vec1 {};
 				vec1.changeVector(50,50);
 				Vector2 vec2 {};
-				vec2.changeVector(750,65);
+				vec2.changeVector(65,65);
 				drawLine(subwindow,vec1,vec2,color);
 			} 
 			break;
