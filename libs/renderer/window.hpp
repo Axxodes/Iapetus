@@ -48,9 +48,9 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 				HDC subwindow = GetDC(window);
 				Color3 color {};
 				color.changeColor(255,0,0);
-				for (int i=1;i>=50;i++)
+				for (int i=0;i<10;i++)
 				{
-					setPixelOnScreen(subwindow,i,50,color);
+				setPixelOnScreen(subwindow,50+i,50,color);
 				}
 			} 
 			break;
@@ -70,7 +70,7 @@ bool platform_create_window(int width, int height, const char* title)
 
 	WNDCLASSA wc = {};
 	wc.hInstance = instance;
-	wc.hIcon = LoadIcon(instance,IDI_APPLICATION);
+	wc.hIcon = (HICON)LoadImage(instance,"icon.ico",IMAGE_ICON,32,32,LR_LOADFROMFILE);
 	wc.hCursor = LoadCursor(NULL,IDC_ARROW); // default twin
 	wc.lpszClassName = title; // not the title
 	wc.lpfnWndProc = windows_window_callback;
