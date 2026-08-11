@@ -5,6 +5,9 @@
 #include <cmath>
 #include "objects.hpp"
 
+// Incase this ever changes
+constexpr double pi {3.141592653589793};
+
 void setPixelOnScreen(HDC window, int x, int y, Color3 color)
 {
     COLORREF Color = RGB(color.bitValue[0],color.bitValue[1],color.bitValue[2]);
@@ -21,8 +24,7 @@ void generateCircle(HDC subwindow, int radius, Color3 color)
 
 void drawLine(HDC window, Vector2 vec1, Vector2 vec2, Color3 color)
 {
-    double m = static_cast<double>(vec2.y - vec1.y) /
-               static_cast<double>(vec2.x - vec1.x);
+    double m = static_cast<double>(vec2.y - vec1.y) / static_cast<double>(vec2.x - vec1.x);
 
     double c = vec1.y - m * vec1.x;
 
@@ -35,7 +37,7 @@ void drawLine(HDC window, Vector2 vec1, Vector2 vec2, Color3 color)
 
 void drawCube(HDC window, Vector2 rootPos, Color3 color)
 {
-
+    
 }
 
 void drawSine(HDC window,Color3 color)

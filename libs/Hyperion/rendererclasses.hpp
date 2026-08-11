@@ -4,9 +4,6 @@
 #include "propertiesclasses.hpp"
 #include <windows.h>
 
-// Incase this ever changes
-constexpr double pi {3.141592653589793};
-
 class Vector3 
 {
     public:
@@ -36,24 +33,6 @@ class Vector3
     }
 };
 
-Vector3 vectorDotProduct(Vector3 vec1, Vector3 vec2)
-{
-    Vector3 output {};
-    output.changeX(vec1.x*vec2.x);
-    output.changeY(vec1.y*vec2.y);
-    output.changeZ(vec1.z*vec2.z);
-    return output;
-}
-
-Vector3 vectorAdd(Vector3 vec1, Vector3 vec2)
-{
-    Vector3 output{};
-    output.changeX(vec1.x+vec2.x);
-    output.changeY(vec1.y+vec2.y);
-    output.changeZ(vec1.z+vec2.z);
-    return output;
-}
-
 class Vector2
 {
     public:
@@ -77,11 +56,24 @@ class Vector2
     }
 };
 
-Vector2 vectorDotProduct(Vector2 vec1, Vector2 vec2)
+int vectorDotProduct(Vector3 vec1, Vector3 vec2)
 {
-    Vector2 output {};
-    output.changeX(vec1.x*vec2.x);
-    output.changeY(vec1.y*vec2.y);
+    int output {vec1.x*vec2.x+vec1.y*vec2.y+vec1.z*vec2.z};
+    return output;
+}
+
+Vector3 vectorAdd(Vector3 vec1, Vector3 vec2)
+{
+    Vector3 output{};
+    output.changeX(vec1.x+vec2.x);
+    output.changeY(vec1.y+vec2.y);
+    output.changeZ(vec1.z+vec2.z);
+    return output;
+}
+
+int vectorDotProduct(Vector2 vec1, Vector2 vec2)
+{
+    int output {vec1.x*vec2.x+vec1.y*vec2.y};
     return output;
 }
 
@@ -98,3 +90,10 @@ class Vertex
     public:
     Vector3 position{};
 };
+
+class Ray
+{
+    public:
+    Vector3 direction {};
+    Vector3 origin {};
+}
