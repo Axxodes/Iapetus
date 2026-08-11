@@ -16,7 +16,8 @@ It allows for  lightweight games, so your game could theoretically run on a lite
 
 # How to use Iapetus?
 
-The .exe file is the application itself, you can run it with a command prompt or by double clicking it.\n // Build.bat and Run.bat should be ignored, they are to compile the engine with g++ (the exe file is the compiled version so it has to use for the user)
+The .exe file is the application itself, you can run it with a command prompt or by double clicking it.
+// Build.bat should be ignored, it is to compile the engine with g++, if you adjust some code or assets, you will need to run it.
 
 # Why the name Iapetus?
 
