@@ -24,6 +24,7 @@ static bool running = true;
 HWND textbox;
 
 #include <iostream>
+#include "framebuffer.hpp"
 
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 										 WPARAM wParam, LPARAM lParam)
@@ -47,13 +48,13 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			if(wParam == VK_SHIFT)
 			{
 				HDC subwindow = GetDC(window);
-				Color3 color {};
+				/*Color3 color {};
 				color.changeColor(0,0,0);
 				Vector2 vec1 {};
 				vec1.changeVector(50,50);
 				Vector2 vec2 {};
 				vec2.changeVector(65,65);
-				drawLine(subwindow,vec1,vec2,color);
+				drawLine(subwindow,vec1,vec2,color); */
 			} 
 			break;
 		}
@@ -118,12 +119,61 @@ void platform_update_window()
 	}
 }
 
+void displayBuffer(HWND window, FrameBuffer fa)
+{
+	HDC subwindow = GetDC(window);
+	RECT rect;
+				GetClientRect(window, &rect);
+
+				int width = rect.right - rect.left;
+				int height = rect.bottom - rect.top;
+
+	BITMAPINFO bitmapInfo{};
+
+	bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	bitmapInfo.bmiHeader.biWidth = width;
+	bitmapInfo.bmiHeader.biHeight = -height;
+	bitmapInfo.bmiHeader.biPlanes = 1;
+	bitmapInfo.bmiHeader.biBitCount = 32;
+	bitmapInfo.bmiHeader.biCompression = BI_RGB;
+
+	while(true)
+	{
+		StretchDIBits(subwindow, // reference to hdc
+				  0,        	 // xdest
+				  0,        	 // ydest
+				  width,
+				  height,
+				  0,
+				  0,
+				  width,
+				  height,
+				  fa.memory,	 //reference to the allocated memory
+				  &bitmapInfo,   //info on reading the allocated memory (see line 7 through 14 of the function)
+				  DIB_RGB_COLORS,//usage
+				  SRCCOPY        //i have no idea
+
+		);
+	}
+}
+
 void initialise_window(int x, int y)
 {
     platform_create_window(x,y,"Iapetus");
+	HWND window = GetActiveWindow();
+
+	RECT rect;
+	GetClientRect(window, &rect);
+
+	int width = rect.right - rect.left;
+	int height = rect.bottom - rect.top;
+
+	FrameBuffer Buffer = createFrameBuffer(width*height);
+	testFillFrameBuffer();
 
 	while(running)
 	{
 		platform_update_window();
+		displayBuffer(window,Buffer);
 	}
 }

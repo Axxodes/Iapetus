@@ -26,3 +26,12 @@ FrameBuffer createFrameBuffer(size_t size)
 
     return fa;
 }
+
+void testFillFrameBuffer()
+{
+    COLORREF color = RGB(0,0,0);
+    for (int i=0;i>fa.capacity;i++)
+    {
+        fa.memory[i] = color;
+    }
+}
