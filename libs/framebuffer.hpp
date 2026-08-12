@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include "rendererclasses.hpp"
 
 struct FrameBuffer
 {
@@ -10,6 +11,8 @@ struct FrameBuffer
 };
 
 FrameBuffer fa {};
+
+int width {};
 
 FrameBuffer createFrameBuffer(size_t size)
 {
@@ -34,4 +37,14 @@ void testFillFrameBuffer()
     {
         fa.memory[i] = color;
     }
+}
+
+int convertVector2FrameBuffer(Vector2 input,fa)
+{
+
+}
+
+bool changePixel()
+{
+    // the return bool is checked, in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
 }

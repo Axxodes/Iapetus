@@ -47,8 +47,8 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			if(wParam == VK_SHIFT)
 			{
-				HDC subwindow = GetDC(window);
-				/*Color3 color {};
+				/* HDC subwindow = GetDC(window);
+				Color3 color {};
 				color.changeColor(0,0,0);
 				Vector2 vec1 {};
 				vec1.changeVector(50,50);
@@ -123,10 +123,10 @@ void displayBuffer(HWND window, FrameBuffer fa)
 {
 	HDC subwindow = GetDC(window);
 	RECT rect;
-				GetClientRect(window, &rect);
+	GetClientRect(window, &rect);
 
-				int width = rect.right - rect.left;
-				int height = rect.bottom - rect.top;
+	int width = rect.right - rect.left;
+	int height = rect.bottom - rect.top;
 
 	BITMAPINFO bitmapInfo{};
 
@@ -136,10 +136,7 @@ void displayBuffer(HWND window, FrameBuffer fa)
 	bitmapInfo.bmiHeader.biPlanes = 1;
 	bitmapInfo.bmiHeader.biBitCount = 32;
 	bitmapInfo.bmiHeader.biCompression = BI_RGB;
-
-	while(true)
-	{
-		StretchDIBits(subwindow, // reference to hdc
+	StretchDIBits(subwindow, // reference to hdc
 				  0,        	 // xdest
 				  0,        	 // ydest
 				  width,
@@ -153,8 +150,8 @@ void displayBuffer(HWND window, FrameBuffer fa)
 				  DIB_RGB_COLORS,//usage
 				  SRCCOPY        //i have no idea
 
-		);
-	}
+	);
+	ReleaseDC(window, subwindow);
 }
 
 void initialise_window(int x, int y)
@@ -168,12 +165,13 @@ void initialise_window(int x, int y)
 	int width = rect.right - rect.left;
 	int height = rect.bottom - rect.top;
 
-	FrameBuffer Buffer = createFrameBuffer(width*height);
+	FrameBuffer Buffer = createFrameBuffer(width*height*4);
 	testFillFrameBuffer();
 
 	while(running)
 	{
 		platform_update_window();
 		displayBuffer(window,Buffer);
+		Sleep(50);
 	}
 }
