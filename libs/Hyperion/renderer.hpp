@@ -4,21 +4,23 @@
 #include <windows.h>
 #include <cmath>
 #include "objects.hpp"
+#include "framebuffer.hpp"
 
 // Incase this ever changes
 constexpr double pi {3.141592653589793};
 
-void setPixelOnScreen(HDC window, int x, int y, Color3 color)
+void setPixelOnScreen(int x, int y, Color3 colorIn)
 {
-    COLORREF Color = RGB(color.bitValue[0],color.bitValue[1],color.bitValue[2]);
-    SetPixel(window,x,y,Color);
+    Vector2 position {};
+    position.changeVector(x,y);
+    changePixel(position,colorIn);
 }
 
-void generateCircle(HDC subwindow, int radius, Color3 color)
+void generateCircle(int radius, Color3 color)
 {
     for (int i=0;i<10;i++)
 	{
-		setPixelOnScreen(subwindow,50+i,50,color);
+		setPixelOnScreen(50+i,50,color);
 	}
 }
 
@@ -31,16 +33,16 @@ void drawLine(HDC window, Vector2 vec1, Vector2 vec2, Color3 color)
     for (int x = vec1.x; x <= vec2.x; x++)
     {
         int y = static_cast<int>(round(m * x + c));
-        setPixelOnScreen(window, x, y, color);
+        setPixelOnScreen(x, y, color);
     }
 }
 
-void drawCube(HDC window, Vector2 rootPos, Color3 color)
+void drawCube(Vector2 rootPos, Color3 color)
 {
     
 }
 
-void drawSine(HDC window,Color3 color)
+void drawSine(Vector2 rootPos, Color3 color)
 {
     
 }

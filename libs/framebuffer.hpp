@@ -3,20 +3,22 @@
 #include <cstring>
 #include <iostream>
 #include "rendererclasses.hpp"
+#include "propertiesclasses.hpp"
+#include <windows.h>
 
 struct FrameBuffer
 {
     size_t capacity;
-    char* memory;
+    COLORREF* memory;
 };
 
 FrameBuffer fa {};
 
 int width {};
 
-FrameBuffer createFrameBuffer(size_t size)
+FrameBuffer createFrameBuffer(size_t size, int widthIn)
 {
-    fa.memory = (char*)std::malloc(size);
+    fa.memory = (COLORREF*)std::malloc(size);
     if (fa.memory)
     {
         fa.capacity = size;
@@ -26,6 +28,8 @@ FrameBuffer createFrameBuffer(size_t size)
     {
         std::cout << "Error, framebuffer failed to allocate.";
     }
+
+    width = widthIn;
 
     return fa;
 }
@@ -39,12 +43,20 @@ void testFillFrameBuffer()
     }
 }
 
-int convertVector2FrameBuffer(Vector2 input,fa)
+int convertVector2FrameBuffer(Vector2 input)
 {
-
+    if (width)
+    {
+        return input.y * width + input.x;
+    }
+    return 0;
 }
 
-bool changePixel()
+bool changePixel(Vector2 position, Color3 colorIn)
 {
-    // the return bool is checked, in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
+    // the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
+    COLORREF color = RGB(colorIn.bitValue[0],colorIn.bitValue[1],colorIn.bitValue[2]);
+    int pixel {convertVector2FrameBuffer(position)};
+    fa.memory[pixel] = color;
+    return true;
 }

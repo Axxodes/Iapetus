@@ -1,5 +1,6 @@
-// NO shoutout to spiderbat229
 #pragma once
+
+//win32 include
 
 #ifdef _WIN32
 #ifndef WIN32_LEAN_AND_MEAN
@@ -11,6 +12,9 @@
 #endif
 
 #include <windows.h>
+
+//normal includes
+
 #endif
 
 #include <string>
@@ -18,13 +22,19 @@
 #include "renderer.hpp"
 #include "rendererclasses.hpp"
 
+#include <iostream>
+#include "framebuffer.hpp"
+
+// global vars
+
 static HWND window;
 static bool running = true;
 
 HWND textbox;
 
-#include <iostream>
-#include "framebuffer.hpp"
+FrameBuffer Buffer {};
+
+// code
 
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 										 WPARAM wParam, LPARAM lParam)
@@ -32,6 +42,26 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 	LRESULT result = 0;
 	switch(msg)
 	{
+		case WM_SIZE:
+		{
+			int width = LOWORD(lParam);
+			int height = HIWORD(lParam);
+
+			if (!Buffer.memory)
+			{
+				Buffer = createFrameBuffer(width*height*4,width);
+				testFillFrameBuffer();
+			}
+			else
+			{
+				std::free(Buffer.memory);
+				
+				Buffer = createFrameBuffer(width*height*4,width);
+				testFillFrameBuffer();
+			}
+			break;
+		}
+
 		case WM_CREATE:
 		{
 			break;
@@ -47,14 +77,12 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			if(wParam == VK_SHIFT)
 			{
-				/* HDC subwindow = GetDC(window);
-				Color3 color {};
-				color.changeColor(0,0,0);
-				Vector2 vec1 {};
-				vec1.changeVector(50,50);
-				Vector2 vec2 {};
-				vec2.changeVector(65,65);
-				drawLine(subwindow,vec1,vec2,color); */
+				
+				Vector2 vec {};
+				vec.changeVector(65,65);
+				Color3 col {};
+				col.changeColor(255,255,255);
+				changePixel(vec,col);
 			} 
 			break;
 		}
@@ -165,7 +193,7 @@ void initialise_window(int x, int y)
 	int width = rect.right - rect.left;
 	int height = rect.bottom - rect.top;
 
-	FrameBuffer Buffer = createFrameBuffer(width*height*4);
+	Buffer = createFrameBuffer(width*height*4,width);
 	testFillFrameBuffer();
 
 	while(running)
@@ -174,4 +202,5 @@ void initialise_window(int x, int y)
 		displayBuffer(window,Buffer);
 		Sleep(50);
 	}
+	std::free(Buffer.memory);
 }
