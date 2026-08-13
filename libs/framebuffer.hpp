@@ -42,7 +42,7 @@ bool reAllocFrameBuffer(size_t size, int widthIn)
     }
     else
     {
-        std::free(fa);
+        std::free(fa.memory);
         fa.memory = (COLORREF*)std::malloc(size);
         if (fa.memory)
         {
@@ -63,7 +63,7 @@ bool reAllocFrameBuffer(size_t size, int widthIn)
 void testFillFrameBuffer()
 {
     COLORREF color = RGB(0,0,0);
-    for (int i=0;i>fa.capacity;i++)
+    for (int i=0;i<fa.capacity/4-1;i++)
     {
         fa.memory[i] = color;
     }

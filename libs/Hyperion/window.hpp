@@ -27,6 +27,8 @@
 
 #include "fontinterpreter.hpp"
 
+#include <fstream>
+
 // global vars
 
 static HWND window;
@@ -51,14 +53,12 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 
 			if (!Buffer.memory)
 			{
-				Buffer = createFrameBuffer(width*height*4,width);
+				createFrameBuffer(width*height*4,width);
 				testFillFrameBuffer();
 			}
 			else
 			{
-				std::free(Buffer.memory);
-				
-				Buffer = createFrameBuffer(width*height*4,width);
+				reAllocFrameBuffer(width*height*4,width);
 				testFillFrameBuffer();
 			}
 			break;
@@ -87,7 +87,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 				Color3 col {};
 				col.changeColor(255,255,255);
 				drawLine(vec,vec2,col);
-				openFont();
+				openFontLetter('E');
 			} 
 			break;
 		}
@@ -141,6 +141,18 @@ bool platform_create_window(int width, int height, const char* title)
 	return true;
 }
 
+void log()
+{
+    time_t timestamp;
+    time(&timestamp);
+    std::fstream file {};
+    file.open("logs.txt");
+    if (file.is_open())
+    {
+        file << ctime(&timestamp);
+    }
+}
+
 void platform_update_window()
 {
 	MSG msg;
@@ -169,6 +181,7 @@ void displayBuffer(HWND window, FrameBuffer fa)
 	bitmapInfo.bmiHeader.biPlanes = 1;
 	bitmapInfo.bmiHeader.biBitCount = 32;
 	bitmapInfo.bmiHeader.biCompression = BI_RGB;
+	
 	StretchDIBits(subwindow, // reference to hdc
 				  0,        	 // xdest
 				  0,        	 // ydest
@@ -179,7 +192,7 @@ void displayBuffer(HWND window, FrameBuffer fa)
 				  width,
 				  height,
 				  fa.memory,	 //reference to the allocated memory
-				  &bitmapInfo,   //info on reading the allocated memory (see line 7 through 14 of the function)
+				  &bitmapInfo,   //info on reading the allocated memory (see line 8 through 16 of the function)
 				  DIB_RGB_COLORS,//usage
 				  SRCCOPY        //i have no idea
 
@@ -200,6 +213,8 @@ void initialise_window(int x, int y)
 
 	Buffer = createFrameBuffer(width*height*4,width);
 	testFillFrameBuffer();
+
+	log();
 
 	while(running)
 	{
