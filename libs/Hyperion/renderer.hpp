@@ -6,6 +6,8 @@
 #include "objects.hpp"
 #include "framebuffer.hpp"
 
+#include <iostream>
+
 // Incase this ever changes
 constexpr double pi {3.141592653589793};
 
@@ -24,7 +26,7 @@ void generateCircle(int radius, Color3 color)
 	}
 }
 
-void drawLine(HDC window, Vector2 vec1, Vector2 vec2, Color3 color)
+void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
 {
     double m = static_cast<double>(vec2.y - vec1.y) / static_cast<double>(vec2.x - vec1.x);
 

@@ -34,6 +34,32 @@ FrameBuffer createFrameBuffer(size_t size, int widthIn)
     return fa;
 }
 
+bool reAllocFrameBuffer(size_t size, int widthIn)
+{
+    if (!fa.memory)
+    {
+        return false;
+    }
+    else
+    {
+        std::free(fa);
+        fa.memory = (COLORREF*)std::malloc(size);
+        if (fa.memory)
+        {
+            fa.capacity = size;
+            memset(fa.memory, 0, size);
+        }
+        else
+        {
+            std::cout << "Error, framebuffer failed to allocate.";
+        }
+
+        width = widthIn;
+
+        return true;
+    }
+}
+
 void testFillFrameBuffer()
 {
     COLORREF color = RGB(0,0,0);

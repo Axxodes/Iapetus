@@ -25,6 +25,8 @@
 #include <iostream>
 #include "framebuffer.hpp"
 
+#include "fontinterpreter.hpp"
+
 // global vars
 
 static HWND window;
@@ -80,9 +82,12 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 				
 				Vector2 vec {};
 				vec.changeVector(65,65);
+				Vector2 vec2 {};
+				vec2.changeVector(500,90);
 				Color3 col {};
 				col.changeColor(255,255,255);
-				changePixel(vec,col);
+				drawLine(vec,vec2,col);
+				openFont();
 			} 
 			break;
 		}
