@@ -14,7 +14,7 @@ void log(std::string message)
     file.open("logs.txt");
     if (file.is_open())
     {
-        file << "[LOG] " << message;
+        file << message << "[LOG]" << '\n';
     }
 }
 
@@ -39,7 +39,7 @@ int searchLetterInFile(char input)
     return 0;
 }
 
-void openFontLetter(char letter)
+void openFontLetter(char letter) // FIX THIS
 {
     //open file
     std::fstream file {};
@@ -48,16 +48,42 @@ void openFontLetter(char letter)
     /*std::fstream log {};
     log.open("logs.txt");*/
 
-    char x = 'E';
-    char* charptr {&x};
+    std::string fontLetter {};
 
     if (file.is_open())
     {
         int letterE = searchLetterInFile(letter);
         file.seekg(letterE);
-        file.get(charptr,2,'.');
+        std::getline(file, fontLetter, '.'); //filestream
+
+        std::stringstream ss{fontLetter};
         
-        log("Letter has been found");
+        std::string part {};
+
+        while(std::getline(ss,part,':'))
+        {
+            if (std::string str(1, letter) == part)
+            {
+                ss = part;
+            }
+        }
+
+        int count {};
+
+        while(std::getline(ss,part,';')) // stringstream
+        {
+            count+=1
+        }
+
+        std::array<std::string,count> lines {};
+
+        count=0;
+
+        while(std::getline(ss,part,';'))
+        {
+            lines[count] = part;
+            count+=1;
+        }
 
         file.close();
     }
