@@ -13,6 +13,8 @@
 
 #include <windows.h>
 
+static HWND window;
+
 //normal includes
 
 #endif
@@ -25,13 +27,12 @@
 #include <iostream>
 #include "framebuffer.hpp"
 
-#include "fontinterpreter.hpp"
+// #include "fontinterpreter.hpp"
 
 #include <fstream>
 
 // global vars
 
-static HWND window;
 static bool running = true;
 
 HWND textbox;
@@ -50,15 +51,19 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			int width = LOWORD(lParam);
 			int height = HIWORD(lParam);
+			if (width == 0 || height == 0)
+			{
+				break;
+			}
 
 			if (!Buffer.memory)
 			{
-				createFrameBuffer(width*height*4,width);
+				Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width);
 				testFillFrameBuffer();
 			}
 			else
 			{
-				reAllocFrameBuffer(width*height*4,width);
+				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width);
 				testFillFrameBuffer();
 			}
 			break;
@@ -80,14 +85,13 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			if(wParam == VK_SHIFT)
 			{
 				
-				Vector2 vec {};
-				vec.changeVector(65,65);
-				Vector2 vec2 {};
-				vec2.changeVector(500,90);
-				Color3 col {};
-				col.changeColor(255,255,255);
-				drawLine(vec,vec2,col);
-				openFontLetter('E');
+				Color3 circleCol {};
+				circleCol.changeColor(255,255,255);
+				Vector2 circleMid {};
+				circleMid.changeVector(200,200);
+				int radius {320};
+
+				generateCircle(circleMid,radius,circleCol);
 			} 
 			break;
 		}
@@ -211,7 +215,7 @@ void initialise_window(int x, int y)
 	int width = rect.right - rect.left;
 	int height = rect.bottom - rect.top;
 
-	Buffer = createFrameBuffer(width*height*4,width);
+	Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width);
 	testFillFrameBuffer();
 
 	log();

@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <string>
+#include <cstdlib>
 
 class Color3
 {
@@ -38,9 +39,9 @@ class Color3
 	{
 	   if (hexValueIn.length() == 6) 
 	   {
-		int r = hexToInt(hexValueIn.substr(0, 2));
-   		int g = hexToInt(hexValueIn.substr(2, 2));
-    	int b = hexToInt(hexValueIn.substr(4, 2));
+		int r = std::stoi(hexValueIn.substr(0, 2), nullptr, 16);
+		int g = std::stoi(hexValueIn.substr(2, 2), nullptr, 16);
+		int b = std::stoi(hexValueIn.substr(4, 2), nullptr, 16);
 
 		std::array<int,3> tempArr {r,g,b};
 		bitValue = tempArr;

@@ -5,6 +5,9 @@
 #include <cmath>
 #include "objects.hpp"
 #include "framebuffer.hpp"
+#include "math.hpp"
+
+extern HWND window;
 
 #include <iostream>
 
@@ -13,17 +16,58 @@ constexpr double pi {3.141592653589793};
 
 void setPixelOnScreen(int x, int y, Color3 colorIn)
 {
-    Vector2 position {};
-    position.changeVector(x,y);
-    changePixel(position,colorIn);
+    HDC subwindow = GetDC(window);
+	RECT rect;
+	GetClientRect(window, &rect);
+
+	int width = rect.right - rect.left;
+	int height = rect.bottom - rect.top;
+
+    ReleaseDC(window,subwindow);
+
+    if (0 > x or 0 > y)
+    {
+        return;
+    }
+
+    if (x < width and y < height)
+    {
+        Vector2 position {};
+        position.changeVector(x,y);
+        changePixel(position,colorIn);
+        return;
+    }
 }
 
-void generateCircle(int radius, Color3 color)
+void generateCircle(Vector2 midpoint,int radius, Color3 color)
 {
-    for (int i=0;i<10;i++)
-	{
-		setPixelOnScreen(50+i,50,color);
-	}
+    int x {0};
+    int y {-radius};
+    int p {-radius};
+
+    while (x < -y)
+    {
+        if (p>0)
+        {
+            y+=1;
+            p+= 2*(x+y) + 1;
+        }
+        else
+        {
+            p+= 2*x+1; 
+        }
+
+        setPixelOnScreen(midpoint.x+x, midpoint.y+y, color);
+        setPixelOnScreen(midpoint.x-x, midpoint.y+y, color);
+        setPixelOnScreen(midpoint.x+x, midpoint.y-y, color);
+        setPixelOnScreen(midpoint.x-x, midpoint.y-y, color);
+
+        setPixelOnScreen(midpoint.x+y, midpoint.y+x, color);
+        setPixelOnScreen(midpoint.x+y, midpoint.y-x, color);
+        setPixelOnScreen(midpoint.x-y, midpoint.y+x, color);
+        setPixelOnScreen(midpoint.x-y, midpoint.y-x, color);
+        x+=1;
+    }
 }
 
 void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)

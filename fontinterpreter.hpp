@@ -56,7 +56,7 @@ void openFontLetter(char letter) // FIX THIS
         file.seekg(letterE);
         std::getline(file, fontLetter, '.'); //filestream
 
-        std::stringstream ss{fontLetter};
+        std::stringstream ss {fontLetter};
         
         std::string part {};
 
@@ -72,7 +72,7 @@ void openFontLetter(char letter) // FIX THIS
 
         while(std::getline(ss,part,';')) // stringstream
         {
-            count+=1
+            count+=1;
         }
 
         std::array<std::string,count> lines {};

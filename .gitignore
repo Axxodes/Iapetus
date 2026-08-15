@@ -6,3 +6,4 @@ cmake_install.cmake
 _deps/
 build.bat
 third_party/
+desktop.ini
