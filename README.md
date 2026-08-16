@@ -3,9 +3,11 @@
 This game engine is open source so that improvements can find place faster (I'm a solo dev) and bugs can be found quicker.
 I want to keep this as the main page for my game engine.
 
+Currently, only on windows. I'm focusing on the game engine itself and only then I'll port it to other operating systems.
+
 # What is Iapetus?
 
-Iapetus is a c++ game engine with its main focus being optmisation: small file size, lightweight on cpu/gpu and relatively low RAM usage.
+Iapetus is a C++ game engine with its main focus being optmisation: small file size, lightweight on cpu/gpu and relatively low RAM usage.
 
 The renderer that we use is custom made and is called 'Hyperion' (Ὑπερίων, being the Greek titan of light).
 
