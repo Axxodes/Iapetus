@@ -58,7 +58,7 @@ class Color3
     {
         for (int value : bitValue)
 	    {
-    	    std::cout << value << ", ";
+    	    std::cout << value << ",";
 	    }
     }
 

@@ -35,6 +35,8 @@ static HWND window;
 
 static bool running = true;
 
+int updateFPS {20};
+
 HWND textbox;
 
 FrameBuffer Buffer {};
@@ -204,6 +206,11 @@ void displayBuffer(HWND window, FrameBuffer fa)
 	ReleaseDC(window, subwindow);
 }
 
+int evaluateUpdateFPS(int updatedFPS)
+{
+	return (1/updatedFPS)*1000;
+}
+
 void initialise_window(int x, int y)
 {
     platform_create_window(x,y,"Iapetus");
@@ -220,11 +227,13 @@ void initialise_window(int x, int y)
 
 	log();
 
+	int fps = evaluateUpdateFPS(updateFPS);
+
 	while(running)
 	{
 		platform_update_window();
 		displayBuffer(window,Buffer);
-		Sleep(50);
+		Sleep(updateFPS);
 	}
 	std::free(Buffer.memory);
 }
