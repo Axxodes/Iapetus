@@ -11,8 +11,6 @@ class Vector3
 	double y {};
 	double z {};
 
-	std::array<double,3> Value {x,y,z};
-
     void changeVector(double xIn,double yIn,double zIn)
     {
         x = xIn;
@@ -38,8 +36,6 @@ class Vector2
     public:
 	double x {};
 	double y {};
-
-	std::array<double,2> Value {x,y};
 
     void changeVector(double xIn,double yIn)
     {

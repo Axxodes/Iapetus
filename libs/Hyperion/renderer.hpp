@@ -9,6 +9,10 @@
 
 extern HWND window;
 
+
+int width = rect.right - rect.left;
+int height = rect.bottom - rect.top;
+
 #include <iostream>
 
 // Incase this ever changes
@@ -16,14 +20,6 @@ constexpr double pi {3.141592653589793};
 
 void setPixelOnScreen(int x, int y, Color3 colorIn)
 {
-    HDC subwindow = GetDC(window);
-	RECT rect;
-	GetClientRect(window, &rect);
-
-	int width = rect.right - rect.left;
-	int height = rect.bottom - rect.top;
-
-    ReleaseDC(window,subwindow);
 
     if (0 > x or 0 > y)
     {
@@ -41,6 +37,15 @@ void setPixelOnScreen(int x, int y, Color3 colorIn)
 
 void generateCircle(Vector2 midpoint,int radius, Color3 color)
 {
+    HDC subwindow = GetDC(window);
+	RECT rect;
+	GetClientRect(window, &rect);
+
+	width = rect.right - rect.left;
+	height = rect.bottom - rect.top;
+
+    ReleaseDC(window,subwindow);
+
     int x {0};
     int y {-radius};
     int p {-radius};
@@ -79,6 +84,14 @@ Color3 getGradient(Color3 color1, Color3 color2, double gradPercentage)
 
 void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
 {
+    HDC subwindow = GetDC(window);
+	RECT rect;
+	GetClientRect(window, &rect);
+
+	width = rect.right - rect.left;
+	height = rect.bottom - rect.top;
+
+    ReleaseDC(window,subwindow);
     double m = static_cast<double>(vec2.y - vec1.y) / static_cast<double>(vec2.x - vec1.x);
 
     double c = vec1.y - m * vec1.x;
@@ -126,10 +139,26 @@ void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
 
 void drawCube(Vector2 rootPos, Color3 color)
 {
+    HDC subwindow = GetDC(window);
+	RECT rect;
+	GetClientRect(window, &rect);
+
+	width = rect.right - rect.left;
+	height = rect.bottom - rect.top;
+
+    ReleaseDC(window,subwindow);
     
 }
 
 void drawSine(Vector2 rootPos, Color3 color)
 {
+    HDC subwindow = GetDC(window);
+	RECT rect;
+	GetClientRect(window, &rect);
+
+	width = rect.right - rect.left;
+	height = rect.bottom - rect.top;
+
+    ReleaseDC(window,subwindow);
     
 }
