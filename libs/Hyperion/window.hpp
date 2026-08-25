@@ -84,16 +84,27 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 
 		case WM_KEYDOWN:
 		{
-			if(wParam == VK_SHIFT)
+			if (wParam == VK_SHIFT)
 			{
 				
+				/*
 				Color3 circleCol {};
 				circleCol.changeColor(255,255,255);
 				Vector2 circleMid {};
 				circleMid.changeVector(200,200);
-				int radius {320};
-
+				int radius {100}; 
+				
 				generateCircle(circleMid,radius,circleCol);
+				*/
+
+				Vector2 lineStart {};
+				lineStart.changeVector(25,25);
+				Vector2 lineEnd {};
+				lineEnd.changeVector(250,100);
+				Color3 lineCol {};
+				lineCol.changeColor(255,255,255);
+
+				drawLine(lineStart,lineEnd,lineCol);
 			} 
 			break;
 		}

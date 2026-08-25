@@ -3,72 +3,57 @@
 #include <string>
 #include <cstdlib>
 
+#include "math.hpp"
+#include <cmath>
+
 class Color3
 {
-	private:
+	public:
 
 	// values for the 255-type colors
 	int red {};
 	int green {};
 	int blue {};
 
-	public:
-
-	// just store the hex value and shi
-	std::string hexValue {};
-	
-	// actual array used by people
-	std::array<int,3> bitValue {blue, red, green};
-
-	bool changeColor(int r,int g,int b) 
+	void changeColor(int r,int g,int b) 
 	{
-		if (bitValue.size() == 3)
-		{
-			bitValue[0] = r;
-			bitValue[1] = g;
-			bitValue[2] = b;
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
+		red = r;
+		green = g;
+		blue = b;
 	}
 
-	bool changeHexColor(std::string hexValueIn)
+	void changeColor(Color3 colorIn) 
 	{
-	   if (hexValueIn.length() == 6) 
-	   {
-		int r = std::stoi(hexValueIn.substr(0, 2), nullptr, 16);
-		int g = std::stoi(hexValueIn.substr(2, 2), nullptr, 16);
-		int b = std::stoi(hexValueIn.substr(4, 2), nullptr, 16);
-
-		std::array<int,3> tempArr {r,g,b};
-		bitValue = tempArr;
-		hexValue = hexValueIn;
-		return false;
-	   }
-	   else
-	   {
-		return true;
-	   }
+		red = colorIn.red;
+		green = colorIn.green;
+		blue = colorIn.blue;
 	}
-
-    void print()
-    {
-        for (int value : bitValue)
-	    {
-    	    std::cout << value << ",";
-	    }
-    }
-
-    std::string get()
-    {
-        std::string output = "";
-        for (int value : bitValue)
-	    {
-    	    output += std::to_string(value) + " ";
-	    }
-        return output;
-    }
 };
+
+Color3 substractColor3(Color3 color1, Color3 color2)
+{
+	Color3 returnColor {};
+	returnColor.changeColor(color1.red-color2.red,color1.green-color2.green,color1.blue-color2.blue);
+	return returnColor;
+}
+
+Color3 AddColor3(Color3 color1, Color3 color2)
+{
+	Color3 returnColor {};
+	returnColor.changeColor(color1.red+color2.red,color1.green+color2.green,color1.blue+color2.blue);
+	return returnColor;
+}
+
+Color3 MultiplyColor3(Color3 color1, double multiplicant)
+{
+	Color3 returnColor {};
+	returnColor.changeColor(std::round(color1.red*multiplicant),std::round(color1.green*multiplicant),std::round(color1.blue*multiplicant));
+	return returnColor;
+}
+
+Color3 MultiplyColor3(Color3 color1, int multiplicant)
+{
+	Color3 returnColor {};
+	returnColor.changeColor(color1.red*multiplicant,color1.green*multiplicant,color1.blue*multiplicant);
+	return returnColor;
+}

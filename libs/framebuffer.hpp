@@ -81,11 +81,52 @@ int convertVector2FrameBuffer(Vector2 input)
     return 0;
 }
 
+int convertCoordsFrameBuffer(int x, int y)
+{
+    if (width)
+    {
+        return y * width + x;
+    }
+    return 0;
+}
+
 bool changePixel(Vector2 position, Color3 colorIn)
 {
     // the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
-    COLORREF color = RGB(colorIn.bitValue[0],colorIn.bitValue[1],colorIn.bitValue[2]);
+    COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
     int pixel {convertVector2FrameBuffer(position)};
     fa.memory[pixel] = color;
     return true;
+}
+
+Color3 getPixelColor(Vector2 position)
+{
+    int gridPos = convertVector2FrameBuffer(position);
+
+    COLORREF color = fa.memory[gridPos];
+
+    int r = GetRValue(color);
+    int g = GetGValue(color);
+    int b = GetBValue(color);
+
+    Color3 returnColor {};
+    returnColor.changeColor(r,g,b);
+
+    return returnColor;
+}
+
+Color3 getPixelColor(int x, int y)
+{
+    int gridPos = convertCoordsFrameBuffer(x,y);
+
+    COLORREF color = fa.memory[gridPos];
+
+    int r = GetRValue(color);
+    int g = GetGValue(color);
+    int b = GetBValue(color);
+
+    Color3 returnColor {};
+    returnColor.changeColor(r,g,b);
+
+    return returnColor;
 }

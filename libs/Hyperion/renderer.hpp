@@ -70,16 +70,57 @@ void generateCircle(Vector2 midpoint,int radius, Color3 color)
     }
 }
 
+Color3 getGradient(Color3 color1, Color3 color2, double gradPercentage)
+{
+   Color3 output {};
+   output = AddColor3(color1,MultiplyColor3(substractColor3(color2,color1),gradPercentage));
+   return output;
+}
+
 void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
 {
     double m = static_cast<double>(vec2.y - vec1.y) / static_cast<double>(vec2.x - vec1.x);
 
     double c = vec1.y - m * vec1.x;
-
-    for (int x = vec1.x; x <= vec2.x; x++)
+    if (abs(vec2.y - vec1.y) < abs(vec2.x - vec1.x))
     {
-        int y = static_cast<int>(round(m * x + c));
-        setPixelOnScreen(x, y, color);
+        for (int x = vec1.x; x <= vec2.x; x++)
+        {
+            double exacty = static_cast<double>(m * x + c);
+
+            int y1 = static_cast<int>(floor(exacty));
+            int y2 = y1+1;
+
+            double fraction = exacty - std::floor(exacty);
+
+            double percent = 1-fraction;
+
+            Color3 grad1Color = getGradient(getPixelColor(x,y1),color,percent);
+            Color3 grad2Color = getGradient(getPixelColor(x,y2),color,fraction);
+
+            setPixelOnScreen(x, y1, grad1Color);
+            setPixelOnScreen(x, y2, grad2Color);
+        }
+    }
+    else
+    {
+        for (int y = vec1.y; y <= vec2.y; y++)
+        {
+            double exactx = static_cast<double>((y - c) / m);
+
+            int x1 = static_cast<int>(floor(exactx));
+            int x2 = x1+1;
+
+            double fraction = exactx - std::floor(exactx);
+
+            double percent = 1-fraction;
+
+            Color3 grad1Color = getGradient(getPixelColor(x1,y),color,percent);
+            Color3 grad2Color = getGradient(getPixelColor(x2,y),color,fraction);
+
+            setPixelOnScreen(x1, y, grad1Color);
+            setPixelOnScreen(x2, y, grad2Color);
+        }
     }
 }
 
