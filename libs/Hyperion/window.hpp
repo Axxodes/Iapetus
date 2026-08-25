@@ -53,6 +53,9 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			int width = LOWORD(lParam);
 			int height = HIWORD(lParam);
+
+			updateRenderDimensions(width,height);
+
 			if (width == 0 || height == 0)
 			{
 				break;
@@ -102,7 +105,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 				Vector2 lineEnd {};
 				lineEnd.changeVector(250,100);
 				Color3 lineCol {};
-				lineCol.changeColor(255,255,255);
+				lineCol.changeColor(0,255,0);
 
 				drawLine(lineStart,lineEnd,lineCol);
 			} 
