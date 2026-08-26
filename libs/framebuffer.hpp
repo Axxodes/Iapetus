@@ -144,7 +144,7 @@ Color3 getPixelColor(int x, int y)
         return returnColor;
     }
 
-    if (x < width)
+    if (x < width && y < height)
     {
         int gridPos = convertCoordsFrameBuffer(x,y);
 
