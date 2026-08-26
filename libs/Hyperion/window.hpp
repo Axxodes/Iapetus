@@ -61,13 +61,13 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 
 			if (!Buffer.memory)
 			{
-				Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width);
+				Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width,height);
 				updateRenderDimensions(width,height);
 				testFillFrameBuffer();
 			}
 			else
 			{
-				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width);
+				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width,height);
 				updateRenderDimensions(width,height);
 				testFillFrameBuffer();
 			}
@@ -258,7 +258,7 @@ void initialise_window(int x, int y)
 	int width = rect.right - rect.left;
 	int height = rect.bottom - rect.top;
 
-	Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width);
+	Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width,height);
 	testFillFrameBuffer();
 
 	log();

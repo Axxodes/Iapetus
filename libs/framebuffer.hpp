@@ -15,8 +15,9 @@ struct FrameBuffer
 FrameBuffer fa {};
 
 int width {};
+int height {};
 
-FrameBuffer createFrameBuffer(size_t size, int widthIn)
+FrameBuffer createFrameBuffer(size_t size, int widthIn, int heightIn)
 {
     fa.memory = (COLORREF*)std::malloc(size);
     if (fa.memory)
@@ -30,11 +31,12 @@ FrameBuffer createFrameBuffer(size_t size, int widthIn)
     }
 
     width = widthIn;
+    height = heightIn;
 
     return fa;
 }
 
-FrameBuffer reAllocFrameBuffer(size_t size, int widthIn)
+FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
 {
     if (!fa.memory)
     {
@@ -54,6 +56,7 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn)
             memset(fa.memory, 0, size);
 
             width = widthIn;
+            height = heightIn;
 
             return fa;
         }
@@ -110,32 +113,49 @@ bool changePixel(Vector2 position, Color3 colorIn)
 
 Color3 getPixelColor(Vector2 position)
 {
-    int gridPos = convertVector2FrameBuffer(position);
-
-    COLORREF color = fa.memory[gridPos];
-
-    int r = GetRValue(color);
-    int g = GetGValue(color);
-    int b = GetBValue(color);
-
     Color3 returnColor {};
-    returnColor.changeColor(r,g,b);
+
+    if (0 > position.x || 0 > position.y)
+    {
+        return returnColor;
+    }
+    if (position.x < width && position.y < height)
+    {
+        int gridPos = convertVector2FrameBuffer(position);
+
+        COLORREF color = fa.memory[gridPos];
+
+        int r = GetRValue(color);
+        int g = GetGValue(color);
+        int b = GetBValue(color);
+
+        returnColor.changeColor(r,g,b);
+    }
 
     return returnColor;
 }
 
 Color3 getPixelColor(int x, int y)
 {
-    int gridPos = convertCoordsFrameBuffer(x,y);
-
-    COLORREF color = fa.memory[gridPos];
-
-    int r = GetRValue(color);
-    int g = GetGValue(color);
-    int b = GetBValue(color);
-
     Color3 returnColor {};
-    returnColor.changeColor(r,g,b);
+
+    if (0 > x || 0 > y)
+    {
+        return returnColor;
+    }
+
+    if (x < width)
+    {
+        int gridPos = convertCoordsFrameBuffer(x,y);
+
+        COLORREF color = fa.memory[gridPos];
+
+        int r = GetRValue(color);
+        int g = GetGValue(color);
+        int b = GetBValue(color);
+
+        returnColor.changeColor(r,g,b);
+    }
 
     return returnColor;
 }
