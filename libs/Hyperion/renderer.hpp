@@ -35,6 +35,8 @@ void setPixelOnScreen(int x, int y, Color3 colorIn)
         changePixel(x,y,colorIn);
         return;
     }
+
+    std::cout << "Tried to set color for out of bounds pixel, returning blank color.";
 }
 
 void drawCircle(Vector2 midpoint,int radius, Color3 color)

@@ -132,6 +132,8 @@ Color3 getPixelColor(Vector2 position)
         returnColor.changeColor(r,g,b);
     }
 
+    std::cout << "Tried to get color for out of bounds pixel, returning blank color.";
+
     return returnColor;
 }
 
@@ -156,6 +158,8 @@ Color3 getPixelColor(int x, int y)
 
         returnColor.changeColor(r,g,b);
     }
+
+    std::cout << "Tried to get color for out of bounds pixel, returning blank color.";
 
     return returnColor;
 }
