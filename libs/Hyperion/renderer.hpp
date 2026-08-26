@@ -32,14 +32,12 @@ void setPixelOnScreen(int x, int y, Color3 colorIn)
 
     if (x < widthRenderer and y < heightRenderer)
     {
-        Vector2 position {};
-        position.changeVector(x,y);
-        changePixel(position,colorIn);
+        changePixel(x,y,colorIn);
         return;
     }
 }
 
-void generateCircle(Vector2 midpoint,int radius, Color3 color)
+void drawCircle(Vector2 midpoint,int radius, Color3 color)
 {
     int x {0};
     int y {-radius};
@@ -79,6 +77,7 @@ Color3 getGradient(Color3 color1, Color3 color2, double gradPercentage)
 
 void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
 {
+
     double m = static_cast<double>(vec2.y - vec1.y) / static_cast<double>(vec2.x - vec1.x);
     double c = vec1.y - m * vec1.x;
     
@@ -88,18 +87,15 @@ void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
         {
             double exacty = static_cast<double>(m * x + c);
 
-            int y1 = static_cast<int>(floor(exacty));
-            int y2 = y1+1;
+            int y = static_cast<int>(floor(exacty));
 
-            double fraction = exacty - std::floor(exacty);
+            double dist = exacty - std::floor(exacty);
 
-            double percent = 1-fraction;
+            Color3 grad1Color = getGradient(getPixelColor(x,y),color,1-dist);
+            Color3 grad2Color = getGradient(getPixelColor(x,y+1),color,dist);
 
-            Color3 grad1Color = getGradient(getPixelColor(x,y1),color,percent);
-            Color3 grad2Color = getGradient(getPixelColor(x,y2),color,fraction);
-
-            setPixelOnScreen(x, y1, grad1Color);
-            setPixelOnScreen(x, y2, grad2Color);
+            setPixelOnScreen(x, y, grad1Color);
+            setPixelOnScreen(x, y+1, grad2Color);
         }
     }
     else
@@ -108,18 +104,15 @@ void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
         {
             double exactx = static_cast<double>((y - c) / m);
 
-            int x1 = static_cast<int>(floor(exactx));
-            int x2 = x1+1;
+            int x = static_cast<int>(floor(exactx));
 
-            double fraction = exactx - std::floor(exactx);
+            double dist = exactx - std::floor(exactx);
 
-            double percent = 1-fraction;
+            Color3 grad1Color = getGradient(getPixelColor(x,y),color,1-dist);
+            Color3 grad2Color = getGradient(getPixelColor(x+1,y),color,dist);
 
-            Color3 grad1Color = getGradient(getPixelColor(x1,y),color,percent);
-            Color3 grad2Color = getGradient(getPixelColor(x2,y),color,fraction);
-
-            setPixelOnScreen(x1, y, grad1Color);
-            setPixelOnScreen(x2, y, grad2Color);
+            setPixelOnScreen(x, y, grad1Color);
+            setPixelOnScreen(x+1, y, grad2Color);
         }
     }
 }

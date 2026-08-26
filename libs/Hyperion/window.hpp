@@ -54,8 +54,6 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			int width = LOWORD(lParam);
 			int height = HIWORD(lParam);
 
-			updateRenderDimensions(width,height);
-
 			if (width == 0 || height == 0)
 			{
 				break;
@@ -64,11 +62,13 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			if (!Buffer.memory)
 			{
 				Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width);
+				updateRenderDimensions(width,height);
 				testFillFrameBuffer();
 			}
 			else
 			{
 				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width);
+				updateRenderDimensions(width,height);
 				testFillFrameBuffer();
 			}
 			break;
@@ -89,25 +89,47 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			if (wParam == VK_SHIFT)
 			{
-				
-				/*
-				Color3 circleCol {};
-				circleCol.changeColor(255,255,255);
-				Vector2 circleMid {};
-				circleMid.changeVector(200,200);
-				int radius {100}; 
-				
-				generateCircle(circleMid,radius,circleCol);
-				*/
-
 				Vector2 lineStart {};
-				lineStart.changeVector(25,25);
+				lineStart.changeVector(250,250);
+
 				Vector2 lineEnd {};
-				lineEnd.changeVector(250,100);
+				lineEnd.changeVector(500,500);
+
 				Color3 lineCol {};
-				lineCol.changeColor(0,255,0);
+				lineCol.changeColor(255,255,255);
 
 				drawLine(lineStart,lineEnd,lineCol);
+				
+				lineStart.changeVector(250,251);
+				lineEnd.changeVector(501,501);
+
+				drawLine(lineStart,lineEnd,lineCol);
+
+				drawCircle(lineStart,10,lineCol);
+				drawCircle(lineStart,20,lineCol);
+				drawCircle(lineStart,30,lineCol);
+				drawCircle(lineStart,40,lineCol);
+				drawCircle(lineStart,50,lineCol);
+				drawCircle(lineStart,60,lineCol);
+				drawCircle(lineStart,70,lineCol);
+				drawCircle(lineStart,80,lineCol);
+				drawCircle(lineStart,90,lineCol);
+				drawCircle(lineStart,100,lineCol);
+				drawCircle(lineStart,110,lineCol);
+				drawCircle(lineStart,120,lineCol);
+				
+				drawCircle(lineEnd,10,lineCol);
+				drawCircle(lineEnd,20,lineCol);
+				drawCircle(lineEnd,30,lineCol);
+				drawCircle(lineEnd,40,lineCol);
+				drawCircle(lineEnd,50,lineCol);
+				drawCircle(lineEnd,60,lineCol);
+				drawCircle(lineEnd,70,lineCol);
+				drawCircle(lineEnd,80,lineCol);
+				drawCircle(lineEnd,90,lineCol);
+				drawCircle(lineEnd,100,lineCol);
+				drawCircle(lineEnd,110,lineCol);
+				drawCircle(lineEnd,120,lineCol);
 			} 
 			break;
 		}
@@ -222,7 +244,7 @@ void displayBuffer(HWND window, FrameBuffer fa)
 
 int evaluateUpdateFPS(int updatedFPS)
 {
-	return (1/updatedFPS)*1000;
+	return (1000/updatedFPS);
 }
 
 void initialise_window(int x, int y)
