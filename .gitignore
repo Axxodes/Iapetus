@@ -1,9 +1,6 @@
-build/
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
 .vscode/
 _deps/
 build.bat
 third_party/
 desktop.ini
+vulkan/

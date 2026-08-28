@@ -119,6 +119,26 @@ void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
     }
 }
 
+void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color)
+{
+    if (filled == true)
+    {
+        for (int x=0;i<sizeX;x++)
+        {
+            for (int y=0;i<sizeY;y++)
+            {
+                setPixelOnScreen(x,y,color);
+            }
+        }
+    }
+    else
+    {
+        drawLine(std::round(position.x),position.x+sizeX,color)
+        //drawLine(,color)
+        //drawLine(position.x)
+    }
+}
+
 void drawCube(Vector2 rootPos, Color3 color)
 {
 

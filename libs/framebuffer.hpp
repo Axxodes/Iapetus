@@ -95,7 +95,7 @@ int convertCoordsFrameBuffer(int x, int y)
 
 bool changePixel(int x, int y, Color3 colorIn)
 {
-    // the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
+    // possible: the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
     COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
     int pixel {convertCoordsFrameBuffer(x,y)};
     fa.memory[pixel] = color;
@@ -104,7 +104,7 @@ bool changePixel(int x, int y, Color3 colorIn)
 
 bool changePixel(Vector2 position, Color3 colorIn)
 {
-    // the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
+    // possible: the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
     COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
     int pixel {convertVector2FrameBuffer(position)};
     fa.memory[pixel] = color;

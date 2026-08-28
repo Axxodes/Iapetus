@@ -63,13 +63,11 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			{
 				Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width,height);
 				updateRenderDimensions(width,height);
-				testFillFrameBuffer();
 			}
 			else
 			{
 				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width,height);
 				updateRenderDimensions(width,height);
-				testFillFrameBuffer();
 			}
 			break;
 		}
