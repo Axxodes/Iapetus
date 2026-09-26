@@ -27,6 +27,8 @@ static HWND window;
 #include <iostream>
 #include "framebuffer.hpp"
 
+// bool frameChanged = setFrameChangedValue();
+
 // #include "fontinterpreter.hpp"
 
 #include <fstream>
@@ -146,7 +148,7 @@ bool platform_create_window(int width, int height, const char* title)
 
 	WNDCLASSA wc = {};
 	wc.hInstance = instance;
-	wc.hIcon = (HICON)LoadImage(instance,"icon.ico",IMAGE_ICON,32,32,LR_LOADFROMFILE);
+	wc.hIcon = (HICON)LoadImage(instance,"icon.ico",IMAGE_ICON,32,29,LR_LOADFROMFILE);
 	wc.hCursor = LoadCursor(NULL,IDC_ARROW); // default twin
 	wc.lpszClassName = title; // not the title
 	wc.lpfnWndProc = windows_window_callback;
@@ -263,11 +265,34 @@ void initialise_window(int x, int y)
 
 	int fps = evaluateUpdateFPS(updateFPS);
 
+	auto previous = std::chrono::high_resolution_clock::now();
+
+	int frames = 0;
+
 	while(running)
 	{
 		platform_update_window();
-		displayBuffer(window,Buffer);
-		Sleep(updateFPS);
+
+		if (frameChanged == true)
+		{
+			displayBuffer(window,Buffer);
+			frameChanged = false;
+		}
+
+		/*auto current = std::chrono::high_resolution_clock::now();
+
+        std::chrono::duration<double> elapsed = current - previous;
+
+        if (elapsed.count() >= 1.0)
+        {
+            std::cout << frames << '\n';
+            previous = current;
+			frames=0;
+        }
+
+		frames+=1; */
+
+		Sleep(updateFPS); 
 	}
 	std::free(Buffer.memory);
 }

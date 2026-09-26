@@ -17,6 +17,8 @@ FrameBuffer fa {};
 int width {};
 int height {};
 
+bool frameChanged {false};
+
 FrameBuffer createFrameBuffer(size_t size, int widthIn, int heightIn)
 {
     fa.memory = (COLORREF*)std::malloc(size);
@@ -32,6 +34,8 @@ FrameBuffer createFrameBuffer(size_t size, int widthIn, int heightIn)
 
     width = widthIn;
     height = heightIn;
+
+    frameChanged = true;
 
     return fa;
 }
@@ -57,6 +61,8 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
 
             width = widthIn;
             height = heightIn;
+
+            frameChanged = true;
 
             return fa;
         }
@@ -93,12 +99,20 @@ int convertCoordsFrameBuffer(int x, int y)
     return 0;
 }
 
+bool changeFrameBufferValue(int byte, COLORREF color)
+{
+    fa.memory[byte] = color;
+    frameChanged = true;
+
+    return true;
+}
+
 bool changePixel(int x, int y, Color3 colorIn)
 {
     // possible: the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
     COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
     int pixel {convertCoordsFrameBuffer(x,y)};
-    fa.memory[pixel] = color;
+    changeFrameBufferValue(pixel,color);
     return true;
 }
 
@@ -107,7 +121,7 @@ bool changePixel(Vector2 position, Color3 colorIn)
     // possible: the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
     COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
     int pixel {convertVector2FrameBuffer(position)};
-    fa.memory[pixel] = color;
+    changeFrameBufferValue(pixel,color);
     return true;
 }
 
@@ -162,4 +176,15 @@ Color3 getPixelColor(int x, int y)
     std::cout << "Tried to get color for out of bounds pixel, returning blank color.";
 
     return returnColor;
+}
+
+bool* setFrameChangedValue()
+{
+    return &frameChanged;
+}
+
+void returnFrame()
+{
+    frameChanged = true; //tell the window
+    return;
 }

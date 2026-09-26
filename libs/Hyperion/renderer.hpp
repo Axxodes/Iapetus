@@ -1,11 +1,16 @@
 #pragma once
+
 #include "propertiesclasses.hpp"
 #include "rendererclasses.hpp"
+
 #include <windows.h>
 #include <cmath>
 #include "objects.hpp"
 #include "framebuffer.hpp"
 #include "math.hpp"
+
+#include <thread>
+#include <iostream>
 
 extern HWND window;
 
@@ -17,8 +22,6 @@ void updateRenderDimensions(int widthIn, int heightIn)
     widthRenderer = widthIn;
     heightRenderer = heightIn;
 }
-
-#include <iostream>
 
 // Incase this ever changes
 constexpr double pi {3.141592653589793};
@@ -36,7 +39,7 @@ void setPixelOnScreen(int x, int y, Color3 colorIn)
         return;
     }
 
-    std::cout << "Tried to set color for out of bounds pixel, returning blank color.";
+    std::cout << "Tried to set color for out of bounds pixel, returning blank color. \n";
 }
 
 void drawCircle(Vector2 midpoint,int radius, Color3 color)
@@ -50,7 +53,7 @@ void drawCircle(Vector2 midpoint,int radius, Color3 color)
         if (p>0)
         {
             y+=1;
-            p+= 2*(x+y) + 1;
+            p+=2*(x+y)+1;
         }
         else
         {
@@ -123,9 +126,9 @@ void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color
 {
     if (filled == true)
     {
-        for (int x=0;i<sizeX;x++)
+        for (int x=0;x<sizeX;x++)
         {
-            for (int y=0;i<sizeY;y++)
+            for (int y=0;y<sizeY;y++)
             {
                 setPixelOnScreen(x,y,color);
             }
@@ -133,7 +136,8 @@ void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color
     }
     else
     {
-        drawLine(std::round(position.x),position.x+sizeX,color)
+        //these gotta have vector2 inputs
+        //drawLine(std::round(position.x),position.x+sizeX,color)
         //drawLine(,color)
         //drawLine(position.x)
     }

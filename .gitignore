@@ -1,6 +1,5 @@
 .vscode/
 _deps/
-build.bat
 third_party/
 desktop.ini
 vulkan/
