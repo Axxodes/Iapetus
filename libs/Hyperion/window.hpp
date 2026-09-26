@@ -12,6 +12,7 @@
 #endif
 
 #include <windows.h>
+#include <windowsx.h>
 
 static HWND window;
 
@@ -26,8 +27,6 @@ static HWND window;
 
 #include <iostream>
 #include "framebuffer.hpp"
-
-// bool frameChanged = setFrameChangedValue();
 
 // #include "fontinterpreter.hpp"
 
@@ -44,6 +43,13 @@ HWND textbox;
 FrameBuffer Buffer {};
 
 // code
+
+int savedCursorX {};
+int savedCursorY {};
+
+Vector2 savedCursorVector2 {};
+
+bool firstSelection {true};
 
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 										 WPARAM wParam, LPARAM lParam)
@@ -85,52 +91,41 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			break;
 		}
 
+		case WM_LBUTTONDOWN:
+		{
+    		std::cout << "Left mouse button pressed\n";
+
+			int cursorx = GET_X_LPARAM(lParam);
+			int cursory = GET_Y_LPARAM(lParam);
+
+			Color3 testColor {};
+			testColor.changeColor(255,255,255);
+
+			Vector2 currentCursorVector2 {};
+			currentCursorVector2.changeVector(cursorx,cursory);
+
+			if (firstSelection==true)
+			{
+				savedCursorX = cursorx;
+				savedCursorY = cursory;
+
+				savedCursorVector2.changeVector(cursorx,cursory);
+
+				firstSelection = false;
+
+				break;
+			}
+			else 
+			{
+				drawLine(savedCursorVector2,currentCursorVector2,testColor);
+				firstSelection = true;
+			}
+
+    		break;
+		}
+
 		case WM_KEYDOWN:
 		{
-			if (wParam == VK_SHIFT)
-			{
-				Vector2 lineStart {};
-				lineStart.changeVector(250,250);
-
-				Vector2 lineEnd {};
-				lineEnd.changeVector(500,500);
-
-				Color3 lineCol {};
-				lineCol.changeColor(255,255,255);
-
-				drawLine(lineStart,lineEnd,lineCol);
-				
-				lineStart.changeVector(250,251);
-				lineEnd.changeVector(501,501);
-
-				drawLine(lineStart,lineEnd,lineCol);
-
-				drawCircle(lineStart,10,lineCol);
-				drawCircle(lineStart,20,lineCol);
-				drawCircle(lineStart,30,lineCol);
-				drawCircle(lineStart,40,lineCol);
-				drawCircle(lineStart,50,lineCol);
-				drawCircle(lineStart,60,lineCol);
-				drawCircle(lineStart,70,lineCol);
-				drawCircle(lineStart,80,lineCol);
-				drawCircle(lineStart,90,lineCol);
-				drawCircle(lineStart,100,lineCol);
-				drawCircle(lineStart,110,lineCol);
-				drawCircle(lineStart,120,lineCol);
-				
-				drawCircle(lineEnd,10,lineCol);
-				drawCircle(lineEnd,20,lineCol);
-				drawCircle(lineEnd,30,lineCol);
-				drawCircle(lineEnd,40,lineCol);
-				drawCircle(lineEnd,50,lineCol);
-				drawCircle(lineEnd,60,lineCol);
-				drawCircle(lineEnd,70,lineCol);
-				drawCircle(lineEnd,80,lineCol);
-				drawCircle(lineEnd,90,lineCol);
-				drawCircle(lineEnd,100,lineCol);
-				drawCircle(lineEnd,110,lineCol);
-				drawCircle(lineEnd,120,lineCol);
-			} 
 			break;
 		}
 

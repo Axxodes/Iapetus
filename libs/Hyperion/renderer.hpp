@@ -38,8 +38,13 @@ void setPixelOnScreen(int x, int y, Color3 colorIn)
         changePixel(x,y,colorIn);
         return;
     }
+}
 
-    std::cout << "Tried to set color for out of bounds pixel, returning blank color. \n";
+Color3 getGradient(Color3 color1, Color3 color2, double gradPercentage)
+{
+   Color3 output {};
+   output = AddColor3(color1,MultiplyColor3(substractColor3(color2,color1),gradPercentage));
+   return output;
 }
 
 void drawCircle(Vector2 midpoint,int radius, Color3 color)
@@ -57,7 +62,7 @@ void drawCircle(Vector2 midpoint,int radius, Color3 color)
         }
         else
         {
-            p+= 2*x+1; 
+            p+=2*x+1;
         }
 
         setPixelOnScreen(midpoint.x+x, midpoint.y+y, color);
@@ -71,13 +76,6 @@ void drawCircle(Vector2 midpoint,int radius, Color3 color)
         setPixelOnScreen(midpoint.x-y, midpoint.y-x, color);
         x+=1;
     }
-}
-
-Color3 getGradient(Color3 color1, Color3 color2, double gradPercentage)
-{
-   Color3 output {};
-   output = AddColor3(color1,MultiplyColor3(substractColor3(color2,color1),gradPercentage));
-   return output;
 }
 
 void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
