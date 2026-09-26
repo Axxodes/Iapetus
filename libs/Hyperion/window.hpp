@@ -237,9 +237,9 @@ void displayBuffer(HWND window, FrameBuffer fa)
 	ReleaseDC(window, subwindow);
 }
 
-int evaluateUpdateFPS(int updatedFPS)
+std::chrono::microseconds evaluateUpdateFPS(int updatedFPS)
 {
-	return (1000/updatedFPS);
+	return std::chrono::microseconds(1000000/updatedFPS);
 }
 
 void initialise_window(int x, int y)
@@ -258,14 +258,12 @@ void initialise_window(int x, int y)
 
 	log();
 
-	int fps = evaluateUpdateFPS(updateFPS);
-
-	auto previous = std::chrono::high_resolution_clock::now();
-
-	int frames = 0;
+	auto targetFrameTime = evaluateUpdateFPS(updateFPS);
 
 	while(running)
 	{
+		auto start = std::chrono::high_resolution_clock::now();
+
 		platform_update_window();
 
 		if (frameChanged == true)
@@ -274,20 +272,14 @@ void initialise_window(int x, int y)
 			frameChanged = false;
 		}
 
-		/*auto current = std::chrono::high_resolution_clock::now();
+		auto end = std::chrono::high_resolution_clock::now();
 
-        std::chrono::duration<double> elapsed = current - previous;
+    	auto duration = duration_cast<std::chrono::microseconds>(end - start);
 
-        if (elapsed.count() >= 1.0)
-        {
-            std::cout << frames << '\n';
-            previous = current;
-			frames=0;
-        }
-
-		frames+=1; */
-
-		Sleep(updateFPS); 
+		if (duration < targetFrameTime)
+		{
+			std::this_thread::sleep_for(targetFrameTime - duration);
+		}
 	}
 	std::free(Buffer.memory);
 }
