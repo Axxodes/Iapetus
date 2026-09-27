@@ -44,16 +44,36 @@ Color3 AddColor3(Color3 color1, Color3 color2)
 	return returnColor;
 }
 
-Color3 MultiplyColor3(Color3 color1, double multiplicant)
+Color3 MultiplyColor3(const Color3& color, double multiplier)
 {
-	Color3 returnColor {};
-	returnColor.changeColor(std::round(color1.red*multiplicant),std::round(color1.green*multiplicant),std::round(color1.blue*multiplicant));
-	return returnColor;
+    Color3 result{};
+
+    result.red = static_cast<int>(
+        std::lround(color.red * multiplier)
+    );
+
+    result.green = static_cast<int>(
+        std::lround(color.green * multiplier)
+    );
+
+    result.blue = static_cast<int>(
+        std::lround(color.blue * multiplier)
+    );
+
+    return result;
 }
 
-Color3 MultiplyColor3(Color3 color1, int multiplicant)
+Color3 MultiplyColor3(const Color3& color, int multiplier)
 {
-	Color3 returnColor {};
-	returnColor.changeColor(color1.red*multiplicant,color1.green*multiplicant,color1.blue*multiplicant);
-	return returnColor;
+    Color3 result{};
+
+    result.changeColor(
+        color.red * multiplier,
+        color.green * multiplier,
+        color.blue * multiplier
+    );
+
+    return result;
 }
+
+
