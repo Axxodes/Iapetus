@@ -22,7 +22,7 @@ class Color3
 		blue = b;
 	}
 
-	void changeColor(Color3 colorIn) 
+	void changeColor(Color3 colorIn)
 	{
 		red = colorIn.red;
 		green = colorIn.green;
