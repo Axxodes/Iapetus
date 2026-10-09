@@ -4,9 +4,9 @@
 #include "propertiesclasses.hpp"
 #include <windows.h>
 
-class Vector3 
+struct Vector3 
 {
-    public:
+ 
 	double x {};
 	double y {};
 	double z {};
@@ -17,37 +17,16 @@ class Vector3
         y = yIn;
         z = zIn;
     }
-    void changeX(double xIn)
-    {
-        x = xIn;
-    }
-    void changeY(double yIn)
-    {
-        y = yIn;
-    }
-    void changeZ(double zIn)
-    {
-        z = zIn;
-    }
 };
 
-class Vector2
+struct Vector2
 {
-    public:
 	double x {};
 	double y {};
 
     void changeVector(double xIn,double yIn)
     {
         x = xIn;
-        y = yIn;
-    }
-    void changeX(double xIn)
-    {
-        x = xIn;
-    }
-    void changeY(double yIn)
-    {
         y = yIn;
     }
 };
@@ -61,9 +40,9 @@ double vectorDotProduct(Vector3 vec1, Vector3 vec2)
 Vector3 vectorAdd(Vector3 vec1, Vector3 vec2)
 {
     Vector3 output{};
-    output.changeX(vec1.x+vec2.x);
-    output.changeY(vec1.y+vec2.y);
-    output.changeZ(vec1.z+vec2.z);
+    output.x = vec1.x+vec2.x;
+    output.y = vec1.y+vec2.y;
+    output.z = vec1.z+vec2.z;
     return output;
 }
 
@@ -76,20 +55,18 @@ double vectorDotProduct(Vector2 vec1, Vector2 vec2)
 Vector2 vectorAdd(Vector2 vec1, Vector2 vec2)
 {
     Vector2 output{};
-    output.changeX(vec1.x+vec2.x);
-    output.changeY(vec1.y+vec2.y);
+    output.x = vec1.x+vec2.x;
+    output.y = vec1.y+vec2.y;
     return output;
 }
 
-class Vertex
+struct Vertex
 {
-    public:
     Vector3 position{};
 };
 
-class Ray
+struct Ray
 {
-    public:
     Vector3 direction {};
     Vector3 origin {};
 };
