@@ -30,6 +30,7 @@ FrameBuffer createFrameBuffer(size_t size, int widthIn, int heightIn)
     else
     {
         std::cout << "Error, framebuffer failed to allocate.";
+return fa;
     }
 
     width = widthIn;
