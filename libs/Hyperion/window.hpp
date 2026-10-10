@@ -93,6 +93,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 
 		case WM_LBUTTONDOWN:
 		{
+// add button support via quadrants to optimise
     		std::cout << "Left mouse button pressed\n";
 
 			int cursorx = GET_X_LPARAM(lParam);
