@@ -12,6 +12,8 @@
 #include <thread>
 #include <iostream>
 
+#include <algorithm>
+
 extern HWND window;
 
 int widthRenderer {};
@@ -42,10 +44,29 @@ void setPixelOnScreen(int x, int y, Color3 colorIn)
 
 Color3 getGradient(Color3 color1, Color3 color2, double gradPercentage)
 {
-   Color3 output {};
-   output = AddColor3(color1,MultiplyColor3(substractColor3(color2,color1),gradPercentage));
-   return output;
+    coverage = std::clamp(coverage, 0.0, 1.0);
+
+    Color3 result{};
+
+    result.red = static_cast<int>(std::lround(
+        background.red +
+        (lineColor.red - background.red) * coverage
+    ));
+
+    result.green = static_cast<int>(std::lround(
+        background.green +
+        (lineColor.green - background.green) * coverage
+    ));
+
+    result.blue = static_cast<int>(std::lround(
+        background.blue +
+        (lineColor.blue - background.blue) * coverage
+    ));
+
+    return result;
 }
+
+
 
 void drawCircle(Vector2 midpoint,int radius, Color3 color)
 {

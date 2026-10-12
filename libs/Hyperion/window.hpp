@@ -42,14 +42,9 @@ HWND textbox;
 
 FrameBuffer Buffer {};
 
-// code
+// code stuff
 
-int savedCursorX {};
-int savedCursorY {};
-
-Vector2 savedCursorVector2 {};
-
-bool firstSelection {true};
+// dont have anything to put here tho
 
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 										 WPARAM wParam, LPARAM lParam)
@@ -93,34 +88,8 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 
 		case WM_LBUTTONDOWN:
 		{
-// add button support via quadrants to optimise
-    		std::cout << "Left mouse button pressed\n";
-
-			int cursorx = GET_X_LPARAM(lParam);
-			int cursory = GET_Y_LPARAM(lParam);
-
-			Color3 testColor {};
-			testColor.changeColor(255,255,255);
-
-			Vector2 currentCursorVector2 {};
-			currentCursorVector2.changeVector(cursorx,cursory);
-
-			if (firstSelection==true)
-			{
-				savedCursorX = cursorx;
-				savedCursorY = cursory;
-
-				savedCursorVector2.changeVector(cursorx,cursory);
-
-				firstSelection = false;
-
-				break;
-			}
-			else 
-			{
-				drawLine(savedCursorVector2,currentCursorVector2,testColor);
-				firstSelection = true;
-			}
+			// quadranting for buttons
+			// buttons as in the shit for clicking with left mouse button
 
     		break;
 		}
