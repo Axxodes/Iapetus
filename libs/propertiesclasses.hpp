@@ -6,16 +6,18 @@
 #include "math.hpp"
 #include <cmath>
 
+#include <cstdint>
+
 class Color3
 {
 	public:
 
 	// values for the 255-type colors
-	int red {};
-	int green {};
-	int blue {};
+	std::uint8_t red {};
+	std::uint8_t green {};
+	std::uint8_t blue {};
 
-	void changeColor(int r,int g,int b) 
+	void changeColor(std::uint8_t r,std::uint8_t g,std::uint8_t b) 
 	{
 		red = r;
 		green = g;

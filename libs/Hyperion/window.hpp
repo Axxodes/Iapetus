@@ -27,10 +27,12 @@ static HWND window;
 
 #include <iostream>
 #include "framebuffer.hpp"
+#include "buttonmanager.hpp"
 
 // #include "fontinterpreter.hpp"
 
 #include <fstream>
+#include <cmath>
 
 // global vars
 
@@ -44,7 +46,8 @@ FrameBuffer Buffer {};
 
 // code stuff
 
-// dont have anything to put here tho
+int quadrantNumber1 {};
+int quadrantNumber2 {};
 
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 										 WPARAM wParam, LPARAM lParam)
@@ -90,6 +93,31 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			// quadranting for buttons
 			// buttons as in the shit for clicking with left mouse button
+
+			int cursorx = GET_X_LPARAM(lParam);
+            int cursory = GET_Y_LPARAM(lParam);
+
+			if (cursorx < quadrantNumber1 && cursory < quadrantNumber2)
+			{
+				std::cout << "quadrant 1 clicked ong" << std::endl;
+				//wanted to note here that the cout autoflush system apparantly doesnt work so i need to manually flush it rn, idk if i turned it off lol
+				// ill be including endl in every cout, if theres a fix, please help!
+			}
+
+			if (cursorx > quadrantNumber1 && cursory < quadrantNumber2)
+			{
+				std::cout << "quadrant 2 clicked ong" << std::endl;
+			}
+
+			if (cursorx < quadrantNumber1 && cursory > quadrantNumber2)
+			{
+				std::cout << "quadrant 3 clicked ong" << std::endl;
+			}
+
+			if (cursorx > quadrantNumber1 && cursory > quadrantNumber2)
+			{
+				std::cout << "quadrant 4 clicked ong" << std::endl;
+			}
 
     		break;
 		}
@@ -223,12 +251,27 @@ void initialise_window(int x, int y)
 	int width = rect.right - rect.left;
 	int height = rect.bottom - rect.top;
 
+	// quadranting setup
+
+	quadrantNumber1 = std::round(width/2);
+	quadrantNumber2 = std::round(height/2);
+
+	// FrameBuffer setup
+
 	Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width,height);
 	testFillFrameBuffer();
+
+	// buttonArray setup
+
+	auto buttonArray = setupButtonArray(200); // change this to whatever we'll need
+
+	// quick log so you can see last login time
 
 	log();
 
 	auto targetFrameTime = evaluateUpdateFPS(updateFPS);
+
+	// main update loop
 
 	while(running)
 	{

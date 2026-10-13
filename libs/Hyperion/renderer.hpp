@@ -42,7 +42,7 @@ void setPixelOnScreen(int x, int y, Color3 colorIn)
     }
 }
 
-Color3 getGradient(Color3 color1, Color3 color2, double gradPercentage)
+Color3 getGradient(const Color3 background, const Color3 lineColor, double coverage)
 {
     coverage = std::clamp(coverage, 0.0, 1.0);
 

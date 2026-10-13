@@ -30,7 +30,7 @@ FrameBuffer createFrameBuffer(size_t size, int widthIn, int heightIn)
     else
     {
         std::cout << "Error, framebuffer failed to allocate.";
-return fa;
+        return fa;
     }
 
     width = widthIn;
@@ -68,7 +68,7 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
             return fa;
         }
         
-        std::cout << "Error, framebuffer failed to allocate.";
+        std::cout << "Error, framebuffer failed to allocate." << std::endl;
         return fa;
     }
 }
@@ -110,7 +110,6 @@ bool changeFrameBufferValue(int byte, COLORREF color)
 
 bool changePixel(int x, int y, Color3 colorIn)
 {
-    // possible: the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
     COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
     int pixel {convertCoordsFrameBuffer(x,y)};
     changeFrameBufferValue(pixel,color);
@@ -119,7 +118,6 @@ bool changePixel(int x, int y, Color3 colorIn)
 
 bool changePixel(Vector2 position, Color3 colorIn)
 {
-    // possible: the return bool is checked in window.hpp, set a variable to this return and check if it is true, if it is then display the buffer, if it is false then dont
     COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
     int pixel {convertVector2FrameBuffer(position)};
     changeFrameBufferValue(pixel,color);
