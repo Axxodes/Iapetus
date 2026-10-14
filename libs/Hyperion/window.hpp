@@ -44,10 +44,22 @@ HWND textbox;
 
 FrameBuffer Buffer {};
 
-// code stuff
+// (global)code stuff
 
 int quadrantNumber1 {};
 int quadrantNumber2 {};
+
+ButtonArray buttonArray1 {};
+ButtonArray buttonArray2 {};
+ButtonArray buttonArray3 {};
+ButtonArray buttonArray4 {};
+
+// functions
+
+void quitApp()
+{
+	running = false;
+}
 
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 										 WPARAM wParam, LPARAM lParam)
@@ -240,6 +252,32 @@ std::chrono::microseconds evaluateUpdateFPS(int updatedFPS)
 	return std::chrono::microseconds(1000000/updatedFPS);
 }
 
+void initialiseButtonArray(size_t size)
+{
+	size_t subArraySize = size >> 2;
+
+	buttonArray1 = setupButtonArray(subArraySize);
+	buttonArray2 = setupButtonArray(subArraySize);
+	buttonArray3 = setupButtonArray(subArraySize);
+	buttonArray4 = setupButtonArray(subArraySize);
+
+	if (!buttonArray1.memory || !buttonArray2.memory || !buttonArray3.memory || !buttonArray4.memory)
+	{
+		quitApp();
+		return;
+	}
+
+	std::cout << "ButtonArray(s) have been succesfully allocated." << std::endl;
+}
+
+void freeButtonArrays()
+{
+	std::free(buttonArray1.memory);
+	std::free(buttonArray2.memory);
+	std::free(buttonArray3.memory);
+	std::free(buttonArray4.memory);
+}
+
 void initialise_window(int x, int y)
 {
     platform_create_window(x,y,"Iapetus");
@@ -263,9 +301,9 @@ void initialise_window(int x, int y)
 
 	// buttonArray setup
 
-	auto buttonArray = setupButtonArray(200); // change this to whatever we'll need
+	initialiseButtonArray(200);
 
-	// quick log so you can see last login time
+	// quick log so you can see last login time, this was mostly to test fstream
 
 	log();
 
@@ -295,4 +333,5 @@ void initialise_window(int x, int y)
 		}
 	}
 	std::free(Buffer.memory);
+	freeButtonArrays();
 }
