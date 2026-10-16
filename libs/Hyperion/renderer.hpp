@@ -4,9 +4,12 @@
 #include "rendererclasses.hpp"
 
 #include <windows.h>
-#include <cmath>
+
 #include "objects.hpp"
 #include "framebuffer.hpp"
+#include "buttonmanager.hpp"
+
+#include <cmath>
 #include "math.hpp"
 
 #include <thread>
@@ -162,12 +165,32 @@ void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color
     }
 }
 
-void drawCube(Vector2 rootPos, Color3 color)
-{
+void drawCube(Vector2 rootPos, Color3 color);
+void drawSine(Vector2 rootPos, Color3 color); // yo ts important as fuck
 
+void renderButtons(ButtonArray buttonArray,int buttonAmount)
+{
+    Color3 color {255,255,255};
+
+    for(int i {0};i<buttonAmount;i++)
+    {
+        Button button = buttonArray.memory[i];
+
+        for(int x{0};x<button.width;x++)
+        {
+            for(int y{0};y<button.height;y++)
+            {
+                setPixelOnScreen(button.x+x,button.y+y,color);
+            }
+        }
+    }
 }
 
-void drawSine(Vector2 rootPos, Color3 color)
+void renderloop(ButtonArray buttonArray1,ButtonArray buttonArray2,ButtonArray buttonArray3,ButtonArray buttonArray4,
+                int buttonAmount1,int buttonAmount2,int buttonAmount3,int buttonAmount4)
 {
-    
+    renderButtons(buttonArray1,buttonAmount1);
+    renderButtons(buttonArray2,buttonAmount2);
+    renderButtons(buttonArray3,buttonAmount3);
+    renderButtons(buttonArray4,buttonAmount4);
 }

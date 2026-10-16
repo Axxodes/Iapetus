@@ -49,6 +49,13 @@ FrameBuffer Buffer {};
 int quadrantNumber1 {};
 int quadrantNumber2 {};
 
+int buttonAmount {200};
+
+int createdButtonAmount1 {0};
+int createdButtonAmount2 {0};
+int createdButtonAmount3 {0};
+int createdButtonAmount4 {0};
+
 ButtonArray buttonArray1 {};
 ButtonArray buttonArray2 {};
 ButtonArray buttonArray3 {};
@@ -56,9 +63,27 @@ ButtonArray buttonArray4 {};
 
 // functions
 
+void freeButtonArrays()
+{
+	std::free(buttonArray1.memory);
+	std::free(buttonArray2.memory);
+	std::free(buttonArray3.memory);
+	std::free(buttonArray4.memory);
+}
+
 void quitApp()
 {
 	running = false;
+	std::free(Buffer.memory);
+	freeButtonArrays();
+}
+
+void syncCurrentButtonAmounts()
+{
+	createdButtonAmount1 = syncCurrentButtonCount1();
+	createdButtonAmount2 = syncCurrentButtonCount2();
+	createdButtonAmount3 = syncCurrentButtonCount3();
+	createdButtonAmount4 = syncCurrentButtonCount4();
 }
 
 LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
@@ -87,6 +112,16 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width,height);
 				updateRenderDimensions(width,height);
 			}
+
+			if (!Buffer.memory)
+			{
+				quitApp();
+				break;
+			}
+
+			quadrantNumber1 = std::round(width/2);
+			quadrantNumber2 = std::round(height/2);
+
 			break;
 		}
 
@@ -109,26 +144,113 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			int cursorx = GET_X_LPARAM(lParam);
             int cursory = GET_Y_LPARAM(lParam);
 
+			std::cout << "Clicked on: " << cursorx << "," << cursory << std::endl;
+
+			//wanted to note here that the cout autoflush system apparantly doesnt work so i need to manually flush it rn, idk if i turned it off somehow lol
+			// ill be including endl in every cout, if theres a fix, please help! (as flushing manually with every cout isnt very optimised)
+
 			if (cursorx < quadrantNumber1 && cursory < quadrantNumber2)
 			{
 				std::cout << "quadrant 1 clicked ong" << std::endl;
-				//wanted to note here that the cout autoflush system apparantly doesnt work so i need to manually flush it rn, idk if i turned it off lol
-				// ill be including endl in every cout, if theres a fix, please help!
+
+				int foundButton;
+				bool didWeFindAButton {false};
+
+				for (int i{0};i<createdButtonAmount1;i++)
+				{
+					Button button = buttonArray1.memory[i];
+
+					if (cursorx >= button.x && cursorx < button.x+button.width && cursory >= button.y && cursory < button.y+button.height)
+					{
+						didWeFindAButton = true;
+						foundButton = i;
+					}
+				}
+
+				if (didWeFindAButton == true)
+				{
+					Button button = buttonArray1.memory[foundButton];
+
+					std::cout << "quadrant 1 found a button; " << foundButton << '\n' << button.x << "," << button.y << " " << button.x+button.width << ","<< button.y+button.height << std::endl;
+				}
 			}
 
 			if (cursorx > quadrantNumber1 && cursory < quadrantNumber2)
 			{
 				std::cout << "quadrant 2 clicked ong" << std::endl;
+
+				int foundButton;
+				bool didWeFindAButton {false};
+
+				for (int i{0};i<createdButtonAmount2;i++)
+				{
+					Button button = buttonArray2.memory[i];
+
+					if (cursorx >= button.x && cursorx < button.x+button.width && cursory >= button.y && cursory < button.y+button.height)
+					{
+						didWeFindAButton = true;
+						foundButton = i;
+					}
+				}
+
+				if (didWeFindAButton == true)
+				{
+					Button button = buttonArray2.memory[foundButton];
+
+					std::cout << "quadrant 2 found a button; " << foundButton << '\n' << button.x << "," << button.y << " " << button.x+button.width << ","<< button.y+button.height << std::endl;
+				}
 			}
 
 			if (cursorx < quadrantNumber1 && cursory > quadrantNumber2)
 			{
 				std::cout << "quadrant 3 clicked ong" << std::endl;
+
+				int foundButton;
+				bool didWeFindAButton {false};
+
+				for (int i{0};i<createdButtonAmount3;i++)
+				{
+					Button button = buttonArray3.memory[i];
+
+					if (cursorx >= button.x && cursorx < button.x+button.width && cursory >= button.y && cursory < button.y+button.height)
+					{
+						didWeFindAButton = true;
+						foundButton = i;
+					}
+				}
+
+				if (didWeFindAButton == true)
+				{
+					Button button = buttonArray3.memory[foundButton];
+
+					std::cout << "quadrant 3 found a button; " << foundButton << '\n' << button.x << "," << button.y << " " << button.x+button.width << ","<< button.y+button.height << std::endl;
+				}
 			}
 
 			if (cursorx > quadrantNumber1 && cursory > quadrantNumber2)
 			{
 				std::cout << "quadrant 4 clicked ong" << std::endl;
+
+				int foundButton;
+				bool didWeFindAButton {false};
+
+				for (int i{0};i<createdButtonAmount4;i++)
+				{
+					Button button = buttonArray4.memory[i];
+
+					if (cursorx >= button.x && cursorx < button.x+button.width && cursory >= button.y && cursory < button.y+button.height)
+					{
+						didWeFindAButton = true;
+						foundButton = i;
+					}
+				}
+
+				if (didWeFindAButton == true)
+				{
+					Button button = buttonArray4.memory[foundButton];
+
+					std::cout << "quadrant 4 found a button; " << foundButton << '\n' << button.x << "," << button.y << " " << button.x+button.width << ","<< button.y+button.height << std::endl;
+				}
 			}
 
     		break;
@@ -136,6 +258,21 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 
 		case WM_KEYDOWN:
 		{
+			if (wParam == VK_SHIFT)
+			{
+				buttonArray1 = addButton(50,50,50,50,buttonArray1,1);
+				buttonArray2 = addButton(375,50,50,50,buttonArray2,2);
+				buttonArray3 = addButton(50,200,50,50,buttonArray3,3);
+				buttonArray4 = addButton(375,200,50,50,buttonArray4,4);
+
+
+				createdButtonAmount1 = syncCurrentButtonCount1();
+				createdButtonAmount2 = syncCurrentButtonCount2();
+				createdButtonAmount3 = syncCurrentButtonCount3();
+				createdButtonAmount4 = syncCurrentButtonCount4();
+
+				returnFrame();
+			}
 			break;
 		}
 
@@ -239,7 +376,7 @@ void displayBuffer(HWND window, FrameBuffer fa)
 				  width,
 				  height,
 				  fa.memory,	 //reference to the allocated memory
-				  &bitmapInfo,   //info on reading the allocated memory (see line 8 through 16 of the function)
+				  &bitmapInfo,   //info on reading the allocated memory (see line 8 through 15 of the function)
 				  DIB_RGB_COLORS,//usage
 				  SRCCOPY        //i have no idea
 
@@ -270,14 +407,6 @@ void initialiseButtonArray(size_t size)
 	std::cout << "ButtonArray(s) have been succesfully allocated." << std::endl;
 }
 
-void freeButtonArrays()
-{
-	std::free(buttonArray1.memory);
-	std::free(buttonArray2.memory);
-	std::free(buttonArray3.memory);
-	std::free(buttonArray4.memory);
-}
-
 void initialise_window(int x, int y)
 {
     platform_create_window(x,y,"Iapetus");
@@ -297,7 +426,11 @@ void initialise_window(int x, int y)
 	// FrameBuffer setup
 
 	Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width,height);
-	testFillFrameBuffer();
+	
+	if (!Buffer.memory)
+	{
+		quitApp();
+	}
 
 	// buttonArray setup
 
@@ -319,6 +452,7 @@ void initialise_window(int x, int y)
 
 		if (frameChanged == true)
 		{
+			renderloop(buttonArray1,buttonArray2,buttonArray3,buttonArray4,createdButtonAmount1,createdButtonAmount2,createdButtonAmount3,createdButtonAmount4);
 			displayBuffer(window,Buffer);
 			frameChanged = false;
 		}

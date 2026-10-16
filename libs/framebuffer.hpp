@@ -22,16 +22,20 @@ bool frameChanged {false};
 FrameBuffer createFrameBuffer(size_t size, int widthIn, int heightIn)
 {
     fa.memory = (COLORREF*)std::malloc(size);
-    if (fa.memory)
+    if (!fa.memory)
     {
-        fa.capacity = size;
-        memset(fa.memory, 0, size);
+        std::cout << "Error, framebuffer failed to allocate, retrying...";
+        fa.memory = (COLORREF*)std::malloc(size);
+
+        if (!fa.memory)
+        {
+            std::cout << "Error, framebuffer failed to allocate twice, aborting...";
+            return fa;
+        }
     }
-    else
-    {
-        std::cout << "Error, framebuffer failed to allocate.";
-        return fa;
-    }
+
+    fa.capacity = size;
+    memset(fa.memory, 0, size);
 
     width = widthIn;
     height = heightIn;
@@ -45,17 +49,18 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
 {
     if (!fa.memory)
     {
+        std::cout << "Error, try to reallocate non-allocated buffer!" << std::endl;
         return fa;
     }
     else
     {
-        COLORREF* tempFrameBuffer = (COLORREF*)std::malloc(size);
+        COLORREF* tempFrameBufferMemoryPointer = (COLORREF*)std::malloc(size);
 
-        if (tempFrameBuffer)
+        if (tempFrameBufferMemoryPointer)
         {
             std::free(fa.memory);
 
-            fa.memory = tempFrameBuffer;
+            fa.memory = tempFrameBufferMemoryPointer;
 
             fa.capacity = size;
             memset(fa.memory, 0, size);
@@ -68,7 +73,8 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
             return fa;
         }
         
-        std::cout << "Error, framebuffer failed to allocate." << std::endl;
+        std::cout << "Error, framebuffer failed to re-allocate, aborting..." << std::endl;
+        //i know this doesnt align with the original allocater where it attempts it twice but i'll fix this later
         return fa;
     }
 }

@@ -1,10 +1,5 @@
-#include <iostream>
-#include <string>
-#include <array>
 #include "window.hpp"
-#include <gpucompute.hpp>
-
-#include <chrono>
+// #include <gpucompute.hpp>
 
 int main()
 {
