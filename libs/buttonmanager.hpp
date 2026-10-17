@@ -64,7 +64,7 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
     if (quadrant == 1)
     {
         currentButtonCount1+=1;
-        if (currentButtonCount1 > buttonarray1.capacity)
+        if (currentButtonCount1 > buttonArray1.capacity)
         {
             std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
         }
@@ -85,7 +85,7 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
     if (quadrant == 2)
     {
         currentButtonCount2+=1;
-        if (currentButtonCount2 > buttonarray1.capacity)
+        if (currentButtonCount2 > buttonArray1.capacity)
         {
             std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
         }
@@ -106,7 +106,7 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
     if (quadrant == 3)
     {
         currentButtonCount3+=1;
-        if (currentButtonCount3 > buttonarray1.capacity)
+        if (currentButtonCount3 > buttonArray1.capacity)
         {
             std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
         }
@@ -127,7 +127,7 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
     if (quadrant == 4)
     {
         currentButtonCount4+=1;
-        if (currentButtonCount4 > buttonarray1.capacity)
+        if (currentButtonCount4 > buttonArray1.capacity)
         {
             std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
         }

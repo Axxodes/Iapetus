@@ -99,12 +99,16 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			{
 				break;
 			}
-		
+			
+			if (!Buffer.memory)
+			{
+				break;
+			}
 			else
 			{
 				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width,height);
 				updateRenderDimensions(width,height);
-			}
+			} 
 
 			if (!Buffer.memory)
 			{
