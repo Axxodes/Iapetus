@@ -74,8 +74,6 @@ void freeButtonArrays()
 void quitApp()
 {
 	running = false;
-	std::free(Buffer.memory);
-	freeButtonArrays();
 }
 
 void syncCurrentButtonAmounts()
@@ -101,12 +99,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			{
 				break;
 			}
-
-			if (!Buffer.memory)
-			{
-				Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width,height);
-				updateRenderDimensions(width,height);
-			}
+		
 			else
 			{
 				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width,height);
@@ -172,10 +165,11 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 					Button button = buttonArray1.memory[foundButton];
 
 					std::cout << "quadrant 1 found a button; " << foundButton << '\n' << button.x << "," << button.y << " " << button.x+button.width << ","<< button.y+button.height << std::endl;
+					button.onClick();
 				}
 			}
 
-			if (cursorx > quadrantNumber1 && cursory < quadrantNumber2)
+			else if (cursorx > quadrantNumber1 && cursory < quadrantNumber2)
 			{
 				std::cout << "quadrant 2 clicked ong" << std::endl;
 
@@ -198,6 +192,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 					Button button = buttonArray2.memory[foundButton];
 
 					std::cout << "quadrant 2 found a button; " << foundButton << '\n' << button.x << "," << button.y << " " << button.x+button.width << ","<< button.y+button.height << std::endl;
+					button.onClick();
 				}
 			}
 
@@ -224,10 +219,11 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 					Button button = buttonArray3.memory[foundButton];
 
 					std::cout << "quadrant 3 found a button; " << foundButton << '\n' << button.x << "," << button.y << " " << button.x+button.width << ","<< button.y+button.height << std::endl;
+					button.onClick();
 				}
 			}
 
-			if (cursorx > quadrantNumber1 && cursory > quadrantNumber2)
+			else if (cursorx > quadrantNumber1 && cursory > quadrantNumber2)
 			{
 				std::cout << "quadrant 4 clicked ong" << std::endl;
 
@@ -250,6 +246,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 					Button button = buttonArray4.memory[foundButton];
 
 					std::cout << "quadrant 4 found a button; " << foundButton << '\n' << button.x << "," << button.y << " " << button.x+button.width << ","<< button.y+button.height << std::endl;
+					button.onClick();
 				}
 			}
 
@@ -260,10 +257,10 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			if (wParam == VK_SHIFT)
 			{
-				buttonArray1 = addButton(50,50,50,50,buttonArray1,1);
-				buttonArray2 = addButton(375,50,50,50,buttonArray2,2);
-				buttonArray3 = addButton(50,200,50,50,buttonArray3,3);
-				buttonArray4 = addButton(375,200,50,50,buttonArray4,4);
+				buttonArray1 = addButton(50,50,50,50,buttonArray1,1,buttonPrint);
+				buttonArray2 = addButton(375,50,50,50,buttonArray2,2,buttonPrint);
+				buttonArray3 = addButton(50,200,50,50,buttonArray3,3,buttonPrint);
+				buttonArray4 = addButton(375,200,50,50,buttonArray4,4,buttonPrint);
 
 
 				createdButtonAmount1 = syncCurrentButtonCount1();
@@ -429,6 +426,7 @@ void initialise_window(int x, int y)
 	
 	if (!Buffer.memory)
 	{
+		// check if the creation failed
 		quitApp();
 	}
 

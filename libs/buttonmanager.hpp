@@ -5,6 +5,8 @@
 
 #include <vector>
 
+using ButtonAction = void (*)();
+
 struct Button
 {
     uint32_t id {0};
@@ -14,6 +16,8 @@ struct Button
 
     int width {};
     int height {};
+
+    ButtonAction onClick;
 };
 
 struct ButtonArray 
@@ -50,7 +54,7 @@ ButtonArray setupButtonArray(size_t size)
     return buttonArray;
 }
 
-ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArray1, int quadrant)
+ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArray1, int quadrant, ButtonAction buttonAction)
 {
     if (quadrant != 1 && quadrant != 2 && quadrant != 3 && quadrant != 4)
     {
@@ -60,6 +64,10 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
     if (quadrant == 1)
     {
         currentButtonCount1+=1;
+        if (currentButtonCount1 > buttonarray1.capacity)
+        {
+            std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
+        }
         totalButtonCount+=1;
 
         Button button;
@@ -68,6 +76,7 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
         button.y = y;
         button.width = width;
         button.height = height;
+        button.onClick = buttonAction;
 
         buttonArray1.memory[currentButtonCount1-1] = button;
         return buttonArray1;
@@ -76,6 +85,10 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
     if (quadrant == 2)
     {
         currentButtonCount2+=1;
+        if (currentButtonCount2 > buttonarray1.capacity)
+        {
+            std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
+        }
         totalButtonCount+=1;
 
         Button button;
@@ -84,6 +97,7 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
         button.y = y;
         button.width = width;
         button.height = height;
+        button.onClick = buttonAction;
 
         buttonArray1.memory[currentButtonCount2-1] = button;
         return buttonArray1;
@@ -92,6 +106,10 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
     if (quadrant == 3)
     {
         currentButtonCount3+=1;
+        if (currentButtonCount3 > buttonarray1.capacity)
+        {
+            std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
+        }
         totalButtonCount+=1;
 
         Button button;
@@ -100,6 +118,7 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
         button.y = y;
         button.width = width;
         button.height = height;
+        button.onClick = buttonAction;
 
         buttonArray1.memory[currentButtonCount3-1] = button;
         return buttonArray1;
@@ -108,6 +127,10 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
     if (quadrant == 4)
     {
         currentButtonCount4+=1;
+        if (currentButtonCount4 > buttonarray1.capacity)
+        {
+            std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
+        }
         totalButtonCount=+1;
 
         Button button;
@@ -116,12 +139,18 @@ ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArra
         button.y = y;
         button.width = width;
         button.height = height;
+        button.onClick = buttonAction;
 
         buttonArray1.memory[currentButtonCount4-1] = button;
         return buttonArray1;
     }
 
     return buttonArray1;
+}
+
+void buttonPrint()
+{
+    std::cout << "Button was clicked" << std::endl;
 }
 
 int syncCurrentButtonCount1()
