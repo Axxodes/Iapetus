@@ -59,14 +59,3 @@ Vector2 vectorAdd(Vector2 vec1, Vector2 vec2)
     output.y = vec1.y+vec2.y;
     return output;
 }
-
-struct Vertex
-{
-    Vector3 position{};
-};
-
-struct Ray
-{
-    Vector3 direction {};
-    Vector3 origin {};
-};

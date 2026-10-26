@@ -8,9 +8,8 @@
 
 #include <cstdint>
 
-class Color3
+struct Color3
 {
-	public:
 
 	// values for the 255-type colors
 	std::uint8_t red {};

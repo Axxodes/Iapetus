@@ -5,7 +5,6 @@
 
 #include <windows.h>
 
-#include "objects.hpp"
 #include "framebuffer.hpp"
 #include "buttonmanager.hpp"
 
@@ -51,20 +50,9 @@ Color3 getGradient(const Color3 background, const Color3 lineColor, double cover
 
     Color3 result{};
 
-    result.red = static_cast<int>(std::lround(
-        background.red +
-        (lineColor.red - background.red) * coverage
-    ));
-
-    result.green = static_cast<int>(std::lround(
-        background.green +
-        (lineColor.green - background.green) * coverage
-    ));
-
-    result.blue = static_cast<int>(std::lround(
-        background.blue +
-        (lineColor.blue - background.blue) * coverage
-    ));
+    result.red = static_cast<int>(std::lround(background.red+(lineColor.red - background.red)*coverage));
+    result.green = static_cast<int>(std::lround(background.green+(lineColor.green - background.green)*coverage));
+    result.blue = static_cast<int>(std::lround(background.blue+(lineColor.blue - background.blue)*coverage));
 
     return result;
 }
@@ -144,6 +132,19 @@ void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
     }
 }
 
+void bresenhamLineDraw(int x1, int y1, int x2, int y2, Color3 color)
+{
+    double m = static_cast<double>(y2 - y1) / static_cast<double>(x2 - x1);
+
+    double c = y1 - m * x1;
+
+    for (int x = x1; x <= x2; x++)
+    {
+        int y = static_cast<int>(round(m * x + c));
+        setPixelOnScreen(x, y, color);
+    }
+}
+
 void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color)
 {
     if (filled == true)
@@ -168,13 +169,13 @@ void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color
 void drawCube(Vector2 rootPos, Color3 color);
 void drawSine(Vector2 rootPos, Color3 color); // yo ts important as fuck
 
-void renderButtons(ButtonArray buttonArray,int buttonAmount)
+void renderButtons(std::vector<Button> buttonArray,int buttonAmount)
 {
     Color3 color {255,255,255};
 
     for(int i {0};i<buttonAmount;i++)
     {
-        Button button = buttonArray.memory[i];
+        Button button = buttonArray[i];
 
         for(int x{0};x<button.width;x++)
         {
@@ -184,13 +185,11 @@ void renderButtons(ButtonArray buttonArray,int buttonAmount)
             }
         }
     }
+    std::cout << "RenderButtons finished" << std::endl;
 }
 
-void renderloop(ButtonArray buttonArray1,ButtonArray buttonArray2,ButtonArray buttonArray3,ButtonArray buttonArray4,
-                int buttonAmount1,int buttonAmount2,int buttonAmount3,int buttonAmount4)
+void renderloop(std::vector<Button> buttonArray,int buttonAmount)
 {
-    renderButtons(buttonArray1,buttonAmount1);
-    renderButtons(buttonArray2,buttonAmount2);
-    renderButtons(buttonArray3,buttonAmount3);
-    renderButtons(buttonArray4,buttonAmount4);
+    renderButtons(buttonArray,buttonAmount);
+    std::cout << "Renderloop finished" << std::endl;
 }

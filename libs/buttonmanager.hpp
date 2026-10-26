@@ -20,132 +20,30 @@ struct Button
     ButtonAction onClick;
 };
 
-struct ButtonArray 
+int currentButtonCount {0};
+
+std::vector<Button> buttonArray {};
+
+std::vector<Button> returnButtonArray()
 {
-    size_t capacity;
-    Button* memory;
-};
-
-int currentButtonCount1 {0};
-int currentButtonCount2 {0};
-int currentButtonCount3 {0};
-int currentButtonCount4 {0};
-
-int totalButtonCount {0};
-
-ButtonArray setupButtonArray(size_t size)
-{
-    ButtonArray buttonArray {};
-    buttonArray.memory = static_cast<Button*>(std::malloc(size*sizeof(Button)));
-
-    if (!buttonArray.memory)
-    {
-        std::cout << "ButtonVectorX failed to allocate, trying again..." << std::endl;
-        buttonArray.memory = static_cast<Button*>(std::malloc(size*sizeof(Button)));
-
-        if (!buttonArray.memory)
-        {
-            std::cout << "ButtonVectorX failed to allocate twice, aborting..." << std::endl;
-            return buttonArray;
-        }
-    }
-
-    buttonArray.capacity = size;
     return buttonArray;
 }
 
-ButtonArray addButton(int x, int y, int width, int height,ButtonArray buttonArray1, int quadrant, ButtonAction buttonAction)
+std::vector<Button> addButton(int x, int y, int width, int height,ButtonAction buttonAction)
 {
-    if (quadrant != 1 && quadrant != 2 && quadrant != 3 && quadrant != 4)
-    {
-       return buttonArray1; 
-    }
 
-    if (quadrant == 1)
-    {
-        currentButtonCount1+=1;
-        if (currentButtonCount1 > buttonArray1.capacity)
-        {
-            std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
-        }
-        totalButtonCount+=1;
+    Button button;
+    button.id = currentButtonCount;
+    button.x = x;
+    button.y = y;
+    button.width = width;
+    button.height = height;
+    button.onClick = buttonAction;
 
-        Button button;
-        button.id = totalButtonCount;
-        button.x = x;
-        button.y = y;
-        button.width = width;
-        button.height = height;
-        button.onClick = buttonAction;
+    buttonArray.push_back(button);
+    currentButtonCount++;
 
-        buttonArray1.memory[currentButtonCount1-1] = button;
-        return buttonArray1;
-    }
-
-    if (quadrant == 2)
-    {
-        currentButtonCount2+=1;
-        if (currentButtonCount2 > buttonArray1.capacity)
-        {
-            std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
-        }
-        totalButtonCount+=1;
-
-        Button button;
-        button.id = totalButtonCount;
-        button.x = x;
-        button.y = y;
-        button.width = width;
-        button.height = height;
-        button.onClick = buttonAction;
-
-        buttonArray1.memory[currentButtonCount2-1] = button;
-        return buttonArray1;
-    }
-
-    if (quadrant == 3)
-    {
-        currentButtonCount3+=1;
-        if (currentButtonCount3 > buttonArray1.capacity)
-        {
-            std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
-        }
-        totalButtonCount+=1;
-
-        Button button;
-        button.id = totalButtonCount;
-        button.x = x;
-        button.y = y;
-        button.width = width;
-        button.height = height;
-        button.onClick = buttonAction;
-
-        buttonArray1.memory[currentButtonCount3-1] = button;
-        return buttonArray1;
-    }
-
-    if (quadrant == 4)
-    {
-        currentButtonCount4+=1;
-        if (currentButtonCount4 > buttonArray1.capacity)
-        {
-            std::cout << "Tried to add a button out of malloc reach, aborting..." << std::endl;
-        }
-        totalButtonCount=+1;
-
-        Button button;
-        button.id = totalButtonCount;
-        button.x = x;
-        button.y = y;
-        button.width = width;
-        button.height = height;
-        button.onClick = buttonAction;
-
-        buttonArray1.memory[currentButtonCount4-1] = button;
-        return buttonArray1;
-    }
-
-    return buttonArray1;
+    return buttonArray;
 }
 
 void buttonPrint()
@@ -153,22 +51,7 @@ void buttonPrint()
     std::cout << "Button was clicked" << std::endl;
 }
 
-int syncCurrentButtonCount1()
+int syncCurrentButtonCount()
 {
-    return currentButtonCount1;
-}
-
-int syncCurrentButtonCount2()
-{
-    return currentButtonCount2;
-}
-
-int syncCurrentButtonCount3()
-{
-    return currentButtonCount3;
-}
-
-int syncCurrentButtonCount4()
-{
-    return currentButtonCount4;
+    return currentButtonCount;
 }

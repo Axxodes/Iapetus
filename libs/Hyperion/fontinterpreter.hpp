@@ -75,7 +75,7 @@ void openFontLetter(char letter) // FIX THIS
             count+=1;
         }
 
-        std::array<std::string,count> lines {};
+        std::array<std::string,count> lines;
 
         count=0;
 

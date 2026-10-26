@@ -4,11 +4,12 @@
 #include <iostream>
 #include "rendererclasses.hpp"
 #include "propertiesclasses.hpp"
+
 #include <windows.h>
 
 struct FrameBuffer
 {
-    size_t capacity;
+    size_t capacity {};
     COLORREF* memory;
 };
 

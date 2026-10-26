@@ -4,10 +4,9 @@
 #include <fstream>
 #include <iostream>
 
-class Material 
+struct Material 
 {
-	public:
-	std::string name {};
+	int id {};
 	bool usesAsset {false};
 
 	void rename(std::string newName)
