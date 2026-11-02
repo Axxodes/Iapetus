@@ -12,9 +12,9 @@ struct Color3
 {
 
 	// values for the 255-type colors
-	std::uint8_t red {};
-	std::uint8_t green {};
-	std::uint8_t blue {};
+	uint8_t red {};
+	uint8_t green {};
+	uint8_t blue {};
 
 	void changeColor(std::uint8_t r,std::uint8_t g,std::uint8_t b) 
 	{
@@ -29,52 +29,46 @@ struct Color3
 		green = colorIn.green;
 		blue = colorIn.blue;
 	}
+
+	Color3 operator-(Color3 other)
+	{
+		Color3 returnColor {};
+		returnColor.changeColor(red-other.red,green-other.green,blue-other.blue);
+		return returnColor;
+	}
+
+	Color3 operator+(Color3 other)
+	{
+		Color3 returnColor {};
+		returnColor.changeColor(red+other.red,green+other.green,blue+other.blue);
+		return returnColor;
+	}
+
+	Color3 operator*(double multiplier)
+	{
+    	Color3 result{};
+
+    	result.red = static_cast<uint8_t>(std::lround(red * multiplier));
+    	result.green = static_cast<uint8_t>(std::lround(green * multiplier));
+    	result.blue = static_cast<uint8_t>(std::lround(blue * multiplier));
+
+    	return result;
+	}
+
+	Color3 operator*(int multiplier)
+	{
+    	Color3 result{};
+
+    	result.changeColor(red*multiplier,green*multiplier,blue*multiplier);
+
+    	return result;
+	}
 };
 
-Color3 substractColor3(Color3 color1, Color3 color2)
-{
-	Color3 returnColor {};
-	returnColor.changeColor(color1.red-color2.red,color1.green-color2.green,color1.blue-color2.blue);
-	return returnColor;
-}
 
-Color3 AddColor3(Color3 color1, Color3 color2)
-{
-	Color3 returnColor {};
-	returnColor.changeColor(color1.red+color2.red,color1.green+color2.green,color1.blue+color2.blue);
-	return returnColor;
-}
 
-Color3 MultiplyColor3(const Color3& color, double multiplier)
-{
-    Color3 result{};
 
-    result.red = static_cast<int>(
-        std::lround(color.red * multiplier)
-    );
 
-    result.green = static_cast<int>(
-        std::lround(color.green * multiplier)
-    );
 
-    result.blue = static_cast<int>(
-        std::lround(color.blue * multiplier)
-    );
-
-    return result;
-}
-
-Color3 MultiplyColor3(const Color3& color, int multiplier)
-{
-    Color3 result{};
-
-    result.changeColor(
-        color.red * multiplier,
-        color.green * multiplier,
-        color.blue * multiplier
-    );
-
-    return result;
-}
 
 

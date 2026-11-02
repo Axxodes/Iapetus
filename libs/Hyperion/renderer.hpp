@@ -7,6 +7,7 @@
 
 #include "framebuffer.hpp"
 #include "buttonmanager.hpp"
+#include "objectmanager.hpp"
 
 #include <cmath>
 #include "math.hpp"
@@ -15,6 +16,7 @@
 #include <iostream>
 
 #include <algorithm>
+#include <array>
 
 extern HWND window;
 
@@ -145,7 +147,7 @@ void bresenhamLineDraw(int x1, int y1, int x2, int y2, Color3 color)
     }
 }
 
-void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color)
+/*void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color)
 {
     if (filled == true)
     {
@@ -164,14 +166,14 @@ void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color
         //drawLine(,color)
         //drawLine(position.x)
     }
-}
+} */
 
-void drawCube(Vector2 rootPos, Color3 color);
-void drawSine(Vector2 rootPos, Color3 color); // yo ts important as fuck
+void drawCube(Vector2 rootPos, Color3 color); // define ts later bro i dont wanna rn
 
-void renderButtons(std::vector<Button> buttonArray,int buttonAmount)
+bool renderButtons(std::vector<Button> buttonArray,int buttonAmount)
 {
-    Color3 color {255,255,255};
+    static int buttonsDrawn {0};
+    int controlButtonsDrawn = buttonsDrawn;
 
     for(int i {0};i<buttonAmount;i++)
     {
@@ -181,15 +183,47 @@ void renderButtons(std::vector<Button> buttonArray,int buttonAmount)
         {
             for(int y{0};y<button.height;y++)
             {
-                setPixelOnScreen(button.x+x,button.y+y,color);
+                setPixelOnScreen(button.x+x,button.y+y,button.color);
             }
         }
+
+        buttonsDrawn++;
     }
+
+    if (controlButtonsDrawn <= buttonsDrawn)
+    {
+        return false;
+    }
+
     std::cout << "RenderButtons finished" << std::endl;
+    return true;
 }
 
-void renderloop(std::vector<Button> buttonArray,int buttonAmount)
+void rayCast(Vector3 cameraPos /* ,std::vector<PolyMesh> object*/)
 {
-    renderButtons(buttonArray,buttonAmount);
+    // widthRenderer, heightRenderer
+
+    std::array<Vector3,100> cameraRayPoints;
+    int count {};
+    for(auto x{0};x<10;x++)
+    {
+        // get a point on the grid
+        for(auto y{0};y<10;y++)
+        {
+            cameraRayPoints[count] = Vector3{std::round(cameraPos.x+x),std::round(cameraPos.y+y),cameraPos.z};
+            count++;
+        }
+    }
+
+    // cast rays from all the the points in cameraRayPoints
+}
+
+bool renderloop(std::vector<Button> buttonArray,int buttonAmount)
+{
+    if(renderButtons(buttonArray,buttonAmount) == false)
+    {
+        return false;
+    };
     std::cout << "Renderloop finished" << std::endl;
+    return true;
 }

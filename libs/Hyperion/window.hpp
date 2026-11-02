@@ -21,6 +21,7 @@ static HWND window;
 #endif
 
 #include <string>
+#include <vector>
 
 #include "renderer.hpp"
 #include "rendererclasses.hpp"
@@ -39,8 +40,6 @@ static HWND window;
 static bool running = true;
 
 int updateFPS {20};
-
-HWND textbox;
 
 FrameBuffer Buffer {};
 
@@ -132,6 +131,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			{
 				Button button = returnedButtonArray[foundButton];
 				button.onClick();
+				returnFrame();
 			}
 
     		break;
@@ -141,7 +141,24 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			if (wParam == VK_SHIFT)
 			{
-				addButton(50,50,50,50,buttonPrint);
+				addButton(50,50,50,50,Color3{0,255,0},buttonPrint);
+				returnFrame();
+
+				/*Color3 currentColor {};
+
+				for(auto x{0};x<255;x++)
+				{
+					currentColor.red++;
+					currentColor.green = 0;
+					currentColor.blue = 255;
+
+					for(auto y{0};y<255;y++)
+					{
+						currentColor.green++;
+						currentColor.blue--;
+						setPixelOnScreen(x,y,currentColor);
+					}
+				} */
 			}
 			break;
 		}
@@ -264,15 +281,15 @@ void initialise_window(int x, int y)
     platform_create_window(x,y,"Iapetus");
 	HWND window = GetActiveWindow();
 
-	RECT rect;
+	/* RECT rect;
 	GetClientRect(window, &rect);
 
 	int width = rect.right - rect.left;
-	int height = rect.bottom - rect.top;
+	int height = rect.bottom - rect.top; */
 
 	// FrameBuffer setup
 
-	Buffer = createFrameBuffer(width*height*sizeof(COLORREF),width,height);
+	Buffer = createFrameBuffer(x*y*sizeof(COLORREF),x,y);
 	
 	if (!Buffer.memory)
 	{
@@ -291,15 +308,24 @@ void initialise_window(int x, int y)
 	while(running)
 	{
 		auto start = std::chrono::high_resolution_clock::now();
+		static bool didAButtonRender {false};
 
 		platform_update_window();
+
+		if (didAButtonRender == true && frameChanged == false)
+		{
+			createdButtonAmount = syncCurrentButtonCount();
+
+			displayBuffer(window,Buffer);
+
+			didAButtonRender = false;
+		}
 
 		if (frameChanged == true)
 		{
 			std::vector<Button> returnedButtonArray = returnButtonArray();
-			createdButtonAmount = syncCurrentButtonCount();
 
-			renderloop(returnedButtonArray,createdButtonAmount);
+			didAButtonRender = renderloop(returnedButtonArray,createdButtonAmount);
 			displayBuffer(window,Buffer);
 			
 			frameChanged = false;

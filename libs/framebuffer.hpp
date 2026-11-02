@@ -80,15 +80,6 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
     }
 }
 
-void testFillFrameBuffer()
-{
-    COLORREF color = RGB(0,0,0);
-    for (int i=0;i<fa.capacity/4-1;i++)
-    {
-        fa.memory[i] = color;
-    }
-}
-
 int convertVector2FrameBuffer(Vector2 input)
 {
     if (width)

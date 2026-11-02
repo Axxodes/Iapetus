@@ -17,6 +17,8 @@ struct Button
     int width {};
     int height {};
 
+    Color3 color {255,255,255};
+
     ButtonAction onClick;
 };
 
@@ -29,15 +31,15 @@ std::vector<Button> returnButtonArray()
     return buttonArray;
 }
 
-std::vector<Button> addButton(int x, int y, int width, int height,ButtonAction buttonAction)
+std::vector<Button> addButton(int x, int y, int width, int height,Color3 color,ButtonAction buttonAction)
 {
-
     Button button;
     button.id = currentButtonCount;
     button.x = x;
     button.y = y;
     button.width = width;
     button.height = height;
+    button.color = color;
     button.onClick = buttonAction;
 
     buttonArray.push_back(button);
