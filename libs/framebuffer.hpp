@@ -10,8 +10,11 @@
 struct FrameBuffer
 {
     size_t capacity {};
-    COLORREF* memory;
+    uint32_t* memory;
 };
+
+
+// uint32_t foo = (long(a) << 24) | (long(b) << 16) | (long(c) << 8);
 
 FrameBuffer fa {};
 
@@ -20,13 +23,19 @@ int height {};
 
 bool frameChanged {false};
 
+void updateFrameBufferDimensions(int widthIn, int heightIn)
+{
+    width = widthIn;
+    height = heightIn;
+}
+
 FrameBuffer createFrameBuffer(size_t size, int widthIn, int heightIn)
 {
-    fa.memory = (COLORREF*)std::malloc(size);
+    fa.memory = (uint32_t*)std::malloc(size);
     if (!fa.memory)
     {
         std::cout << "Error, framebuffer failed to allocate, retrying...";
-        fa.memory = (COLORREF*)std::malloc(size);
+        fa.memory = (uint32_t*)std::malloc(size);
 
         if (!fa.memory)
         {
@@ -55,7 +64,7 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
     }
     else
     {
-        COLORREF* tempFrameBufferMemoryPointer = (COLORREF*)std::malloc(size);
+        uint32_t* tempFrameBufferMemoryPointer = (uint32_t*)std::malloc(size);
 
         if (tempFrameBufferMemoryPointer)
         {
@@ -98,7 +107,7 @@ int convertCoordsFrameBuffer(int x, int y)
     return 0;
 }
 
-bool changeFrameBufferValue(int byte, COLORREF color)
+bool changeFrameBufferValue(int byte, uint32_t color)
 {
     fa.memory[byte] = color;
     frameChanged = true;
@@ -108,7 +117,7 @@ bool changeFrameBufferValue(int byte, COLORREF color)
 
 bool changePixel(int x, int y, Color3 colorIn)
 {
-    COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
+    uint32_t color = (colorIn.red) << 16|(colorIn.green) << 8|(colorIn.blue);
     int pixel {convertCoordsFrameBuffer(x,y)};
     changeFrameBufferValue(pixel,color);
     return true;
@@ -116,7 +125,7 @@ bool changePixel(int x, int y, Color3 colorIn)
 
 bool changePixel(Vector2 position, Color3 colorIn)
 {
-    COLORREF color = RGB(colorIn.red,colorIn.green,colorIn.blue);
+    uint32_t color = (colorIn.red) << 16|(colorIn.green) << 8|(colorIn.blue);
     int pixel {convertVector2FrameBuffer(position)};
     changeFrameBufferValue(pixel,color);
     return true;
@@ -132,17 +141,13 @@ Color3 getPixelColor(Vector2 position)
     }
     if (position.x < width && position.y < height)
     {
-        int gridPos = convertVector2FrameBuffer(position);
+        uint32_t color = fa.memory[convertVector2FrameBuffer(position)];
 
-        COLORREF color = fa.memory[gridPos];
-
-        int r = GetRValue(color);
-        int g = GetGValue(color);
-        int b = GetBValue(color);
-
-        returnColor.changeColor(r,g,b);
+        returnColor.changeColor((color >> 16) & 0xFF,(color >> 8) & 0xFF,(color) & 0xFF);
         return returnColor;
     }
+
+    std::cout << "Tried to get color for out of bounds pixel, returning blank color.";
 
     return returnColor;
 }
@@ -158,15 +163,9 @@ Color3 getPixelColor(int x, int y)
 
     if (x < width && y < height)
     {
-        int gridPos = convertCoordsFrameBuffer(x,y);
+        uint32_t color = fa.memory[convertCoordsFrameBuffer(x,y)];
 
-        COLORREF color = fa.memory[gridPos];
-
-        int r = GetRValue(color);
-        int g = GetGValue(color);
-        int b = GetBValue(color);
-
-        returnColor.changeColor(r,g,b);
+        returnColor.changeColor((color >> 16) & 0xFF,(color >> 8) & 0xFF,(color) & 0xFF);
         return returnColor;
     }
 

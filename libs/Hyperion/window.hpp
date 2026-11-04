@@ -76,7 +76,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			}
 			else
 			{
-				Buffer = reAllocFrameBuffer(width*height*sizeof(COLORREF),width,height);
+				Buffer = reAllocFrameBuffer(width*height*sizeof(uint32_t),width,height);
 				updateRenderDimensions(width,height);
 			} 
 
@@ -141,7 +141,7 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 		{
 			if (wParam == VK_SHIFT)
 			{
-				addButton(50,50,50,50,Color3{0,255,0},buttonPrint);
+				addButton(50,50,50,50,Color3{255,255,255},buttonPrint);
 				returnFrame();
 
 				/*Color3 currentColor {};
@@ -269,6 +269,8 @@ void displayBuffer(HWND window, FrameBuffer fa)
 
 	);
 	ReleaseDC(window, subwindow);
+
+	std::cout << "Frame Rendered" <<std::endl;
 }
 
 std::chrono::microseconds evaluateUpdateFPS(int updatedFPS)
@@ -279,17 +281,10 @@ std::chrono::microseconds evaluateUpdateFPS(int updatedFPS)
 void initialise_window(int x, int y)
 {
     platform_create_window(x,y,"Iapetus");
-	HWND window = GetActiveWindow();
-
-	/* RECT rect;
-	GetClientRect(window, &rect);
-
-	int width = rect.right - rect.left;
-	int height = rect.bottom - rect.top; */
 
 	// FrameBuffer setup
 
-	Buffer = createFrameBuffer(x*y*sizeof(COLORREF),x,y);
+	Buffer = createFrameBuffer(x*y*sizeof(uint32_t),x,y);
 	
 	if (!Buffer.memory)
 	{
@@ -308,24 +303,26 @@ void initialise_window(int x, int y)
 	while(running)
 	{
 		auto start = std::chrono::high_resolution_clock::now();
-		static bool didAButtonRender {false};
 
 		platform_update_window();
 
-		if (didAButtonRender == true && frameChanged == false)
-		{
-			createdButtonAmount = syncCurrentButtonCount();
-
-			displayBuffer(window,Buffer);
-
-			didAButtonRender = false;
-		}
-
 		if (frameChanged == true)
 		{
+			RECT rect;
+			GetClientRect(window, &rect);
+
+			int width = rect.right - rect.left;
+			int height = rect.bottom - rect.top;
+
+			updateRenderDimensions(width,height);
+			updateFrameBufferDimensions(width,height);
+
 			std::vector<Button> returnedButtonArray = returnButtonArray();
 
-			didAButtonRender = renderloop(returnedButtonArray,createdButtonAmount);
+			createdButtonAmount = syncCurrentButtonCount();
+			std::cout << "Main runningloop says: " << width << ',' << height << std::endl;
+
+			renderloop(returnedButtonArray,createdButtonAmount);
 			displayBuffer(window,Buffer);
 			
 			frameChanged = false;

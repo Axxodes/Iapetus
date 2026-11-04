@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cstdio>
 
+#pragma once
 
 #define SM_ASSERT(cond, msg) \
     do { \
@@ -13,7 +14,6 @@
             std::abort(); \
         } \
     } while (0)
-
 
 namespace allocationService
 {

@@ -8,11 +8,7 @@ struct Material
 {
 	int id {};
 	bool usesAsset {false};
-
-	void rename(std::string newName)
-	{
-		name = newName;
-	}
+	
 	void switchMethod()
 	{
 		if (usesAsset == true)

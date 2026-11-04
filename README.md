@@ -9,6 +9,8 @@ Currently, only on windows. We're focusing on the game engine itself and only th
 
 Iapetus is a C++ game engine with its main focus being optmisation: small file size, lightweight on cpu/gpu and relatively low RAM usage.
 
+C++20 required
+
 The renderer that we use is custom made and is called 'Hyperion' or in greek letters: Ὑπερίων, being the Greek titan of light.
 It's meant to give the most we can for a lightweight engine.
 

@@ -63,6 +63,24 @@ struct Color3
 
     	return result;
 	}
+
+	bool operator!=(Color3 other)
+	{
+		if (red != other.red || blue != other.blue || green != other.green)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool operator==(Color3 other)
+	{
+		if (red == other.red && blue == other.blue && green == other.green)
+		{
+			return true;
+		}
+		return false;
+	}
 };
 
 

@@ -9,7 +9,7 @@ using ButtonAction = void (*)();
 
 struct Button
 {
-    uint32_t id {0};
+    long id {0};
 
     int x {};
     int y {};
@@ -20,6 +20,12 @@ struct Button
     Color3 color {255,255,255};
 
     ButtonAction onClick;
+
+    void changePos(int xIn, int yIn)
+    {
+        x = xIn;
+        y = yIn;
+    }
 };
 
 int currentButtonCount {0};

@@ -170,11 +170,8 @@ void bresenhamLineDraw(int x1, int y1, int x2, int y2, Color3 color)
 
 void drawCube(Vector2 rootPos, Color3 color); // define ts later bro i dont wanna rn
 
-bool renderButtons(std::vector<Button> buttonArray,int buttonAmount)
+void renderButtons(std::vector<Button> buttonArray,int buttonAmount)
 {
-    static int buttonsDrawn {0};
-    int controlButtonsDrawn = buttonsDrawn;
-
     for(int i {0};i<buttonAmount;i++)
     {
         Button button = buttonArray[i];
@@ -186,17 +183,9 @@ bool renderButtons(std::vector<Button> buttonArray,int buttonAmount)
                 setPixelOnScreen(button.x+x,button.y+y,button.color);
             }
         }
-
-        buttonsDrawn++;
-    }
-
-    if (controlButtonsDrawn <= buttonsDrawn)
-    {
-        return false;
     }
 
     std::cout << "RenderButtons finished" << std::endl;
-    return true;
 }
 
 void rayCast(Vector3 cameraPos /* ,std::vector<PolyMesh> object*/)
@@ -218,12 +207,11 @@ void rayCast(Vector3 cameraPos /* ,std::vector<PolyMesh> object*/)
     // cast rays from all the the points in cameraRayPoints
 }
 
-bool renderloop(std::vector<Button> buttonArray,int buttonAmount)
+void renderloop(std::vector<Button> buttonArray,int buttonAmount)
 {
-    if(renderButtons(buttonArray,buttonAmount) == false)
-    {
-        return false;
-    };
+    std::cout << "Renderer.hpp says: "<< widthRenderer << ',' << heightRenderer << std::endl;
+
+    renderButtons(buttonArray,buttonAmount);
+    
     std::cout << "Renderloop finished" << std::endl;
-    return true;
 }
