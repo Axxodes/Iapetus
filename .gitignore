@@ -4,3 +4,6 @@ third_party/
 desktop.ini
 vulkan/
 iapetus.exe
+projects/Absent Exit/Absent Exit.iap
+projects/Test/Test.iap
+logs.txt

@@ -1,9 +1,12 @@
 #pragma once
+
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+
 #include "rendererclasses.hpp"
 #include "propertiesclasses.hpp"
+#include "macros.hpp"
 
 #include <windows.h>
 
@@ -18,8 +21,8 @@ struct FrameBuffer
 
 FrameBuffer fa {};
 
-int width {};
-int height {};
+int width;
+int height;
 
 bool frameChanged {false};
 
@@ -34,12 +37,12 @@ FrameBuffer createFrameBuffer(size_t size, int widthIn, int heightIn)
     fa.memory = (uint32_t*)std::malloc(size);
     if (!fa.memory)
     {
-        std::cout << "Error, framebuffer failed to allocate, retrying...";
+        OUTPUT_ERROR("Error, framebuffer failed to allocate, retrying...");
         fa.memory = (uint32_t*)std::malloc(size);
 
         if (!fa.memory)
         {
-            std::cout << "Error, framebuffer failed to allocate twice, aborting...";
+            OUTPUT_ERROR("Error, framebuffer failed to allocate twice, aborting...");
             return fa;
         }
     }
@@ -59,7 +62,7 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
 {
     if (!fa.memory)
     {
-        std::cout << "Error, try to reallocate non-allocated buffer!" << std::endl;
+        OUTPUT_ERROR("Error, try to re-allocate non-allocated buffer!");
         return fa;
     }
     else
@@ -83,8 +86,8 @@ FrameBuffer reAllocFrameBuffer(size_t size, int widthIn, int heightIn)
             return fa;
         }
         
-        std::cout << "Error, framebuffer failed to re-allocate, aborting..." << std::endl;
-        //i know this doesnt align with the original allocater where it attempts it twice but i'll fix this later
+        OUTPUT_ERROR("Error, framebuffer failed to re-allocate, aborting...");
+        //i know this doesnt align with the original allocater where it attempts it twice but i'll add this later
         return fa;
     }
 }
@@ -147,8 +150,6 @@ Color3 getPixelColor(Vector2 position)
         return returnColor;
     }
 
-    std::cout << "Tried to get color for out of bounds pixel, returning blank color.";
-
     return returnColor;
 }
 
@@ -168,8 +169,6 @@ Color3 getPixelColor(int x, int y)
         returnColor.changeColor((color >> 16) & 0xFF,(color >> 8) & 0xFF,(color) & 0xFF);
         return returnColor;
     }
-
-    std::cout << "Tried to get color for out of bounds pixel, returning blank color.";
 
     return returnColor;
 }

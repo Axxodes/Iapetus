@@ -30,7 +30,8 @@ static HWND window;
 #include "framebuffer.hpp"
 #include "buttonmanager.hpp"
 
-// #include "fontinterpreter.hpp"
+#include "filehandler.hpp"
+#include "fontinterpreter.hpp"
 
 #include <fstream>
 #include <cmath>
@@ -142,23 +143,11 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			if (wParam == VK_SHIFT)
 			{
 				addButton(50,50,50,50,Color3{255,255,255},buttonPrint);
+				
+				openFont(L"Default");
+				drawAllFontChars(Vector2(0,0));
+
 				returnFrame();
-
-				/*Color3 currentColor {};
-
-				for(auto x{0};x<255;x++)
-				{
-					currentColor.red++;
-					currentColor.green = 0;
-					currentColor.blue = 255;
-
-					for(auto y{0};y<255;y++)
-					{
-						currentColor.green++;
-						currentColor.blue--;
-						setPixelOnScreen(x,y,currentColor);
-					}
-				} */
 			}
 			break;
 		}
@@ -210,18 +199,6 @@ bool platform_create_window(int width, int height, const char* title)
 	ShowWindow(window,SW_SHOW);
 
 	return true;
-}
-
-void log()
-{
-    time_t timestamp;
-    time(&timestamp);
-    std::fstream file {};
-    file.open("logs.txt");
-    if (file.is_open())
-    {
-        file << ctime(&timestamp);
-    }
 }
 
 void platform_update_window()
@@ -292,10 +269,6 @@ void initialise_window(int x, int y)
 		quitApp();
 	}
 
-	// quick log so you can see last login time, this was mostly to test fstream
-
-	log();
-
 	auto targetFrameTime = evaluateUpdateFPS(updateFPS);
 
 	// main update loop
@@ -338,4 +311,5 @@ void initialise_window(int x, int y)
 		}
 	}
 	std::free(Buffer.memory);
+	RESET_FILEBUFFER();
 }

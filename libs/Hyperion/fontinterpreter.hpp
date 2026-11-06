@@ -1,90 +1,158 @@
-#include <string>
-#include <array>
-#include <fstream>
+#pragma once
+
+#include <vector>
 #include <iostream>
+
 #include "renderer.hpp"
-#include <ctime>
+#include "filehandler.hpp"
 
-
-void log(std::string message)
+struct Line
 {
-    time_t timestamp;
-    time(&timestamp);
-    std::fstream file {};
-    file.open("logs.txt");
-    if (file.is_open())
+    Vector2 start;
+    Vector2 end;
+};
+
+struct Character
+{
+    uint8_t fontId {};
+    std::vector<Line> lines;
+
+    void drawCharToScreen(int size, Vector2 origin)
     {
-        file << message << "[LOG]" << '\n';
+        int vectorSize = static_cast<int>(lines.size());
+        for(int i{0};i<vectorSize;i++)
+        {
+            bresenhamLineDraw((lines[i].start.x*size+origin.x),(lines[i].start.y*size+origin.y),(lines[i].end.x*size+origin.x),(lines[i].end.y*size+origin.y),Color3{255,255,255});
+        }
+    }
+};
+
+struct LetterArray
+{
+    std::vector<Character> characters;
+};
+
+LetterArray letterArray {};
+
+void drawAllFontChars(Vector2 origin)
+{
+    for(size_t i{0};i<letterArray.characters.size();i++)
+    {
+        letterArray.characters[i].drawCharToScreen(3,Vector2(origin.x+(13*i),origin.y/*+(13*static_cast<int>(i/10))*/));
     }
 }
 
-int searchLetterInFile(char input)
+void constructFontChar(int fontId,std::vector<Line> lines)
 {
-    std::fstream file {};
-    file.open("libs/Hyperion/Fonts/Default.txt");
-    if (file.is_open())
-    {
-       char currentLetter {};
-       for (int i=0;i<=50;i++)
-       {
-            currentLetter = file.get();
-            if (currentLetter == input)
-            {
-                file.close();
-                return i;
-            }
-       }
-       return -1;
-    }
-    return 0;
+    Character character {};
+    character.lines = lines;
+    character.fontId = fontId;
+
+    // character.drawCharToScreen(5,Vector2(20,20));
+    letterArray.characters.push_back(character);
 }
 
-void openFontLetter(char letter) // FIX THIS
+void openFont(const wchar_t* name)
 {
-    //open file
-    std::fstream file {};
-    file.open("libs/Hyperion/Fonts/Default.txt");
-
-    /*std::fstream log {};
-    log.open("logs.txt");*/
-
-    std::string fontLetter {};
-
-    if (file.is_open())
+    auto fileName = std::wstring(name) + L".txt";
+    static int fontCount {1};
+    
+    if(!loadFontIntoFileBuffer(fileName.c_str()))
     {
-        int letterE = searchLetterInFile(letter);
-        file.seekg(letterE);
-        std::getline(file, fontLetter, '.'); //filestream
+        return;
+    }
 
-        std::stringstream ss {fontLetter};
-        
-        std::string part {};
+    int totalGlyphs{0};
 
-        while(std::getline(ss,part,':'))
+    for(size_t i{0};i<fileBuffer.used;i++)
+    {
+        char letter = static_cast<char>(fileBuffer.memory[i]);
+        if(letter == '\n')
         {
-            if (std::string str(1, letter) == part)
+            totalGlyphs++;
+        }
+    }
+
+    int prevGlyphEnd{0};
+
+    for(int count{0};count<totalGlyphs;count++)
+    {
+        // change this so it advances to the next line, every iteration.
+        int totalLines {0};
+
+        for(size_t i{0};i<fileBuffer.used;i++)
+        {
+            if(static_cast<int>(i)<prevGlyphEnd)
             {
-                ss = part;
+                continue;
+            }
+            char letter = static_cast<char>(fileBuffer.memory[i]);
+            if(letter == ',')
+            {
+                totalLines++;
+            }
+            if(letter == '\n')
+            {
+                break;
             }
         }
 
-        int count {};
+        std::vector<Line> letterLines(totalLines);
 
-        while(std::getline(ss,part,';')) // stringstream
+        bool onXCoord {true};
+        bool onStartCoord {true};
+        int currentLine {0};
+
+        for(size_t i{1};i<fileBuffer.used;i++)
         {
-            count+=1;
+            if(static_cast<int>(i)<prevGlyphEnd)
+            {
+                continue;
+            }
+            char character = static_cast<char>(fileBuffer.memory[i]);
+
+            if (character >= '0' && character <= '9')
+            {
+                double value = character - '0';
+
+                if(onXCoord == true)
+                {
+                    if(onStartCoord == true)
+                    {
+                        letterLines[currentLine].start.x = value+1;
+                    }
+                    else
+                    {
+                        letterLines[currentLine].end.x = value+1;
+                    }
+                    onXCoord = false;
+                }
+                else
+                {
+                    if(onStartCoord == true)
+                    {
+                        letterLines[currentLine].start.y = value+1;
+                        onStartCoord = false;
+                    }
+                    else
+                    {
+                        letterLines[currentLine].end.y = value+1;
+                        onStartCoord = true;
+                        currentLine++;
+                    }
+                    onXCoord = true;
+                }
+            }
+            if (character == '\n')
+            {
+                prevGlyphEnd = static_cast<int>(i) + 1;
+                OUTPUT_ERROR(prevGlyphEnd << '\n' << count << '\n');
+                break;
+            }
         }
-
-        std::array<std::string,count> lines;
-
-        count=0;
-
-        while(std::getline(ss,part,';'))
-        {
-            lines[count] = part;
-            count+=1;
-        }
-
-        file.close();
+        constructFontChar(fontCount,letterLines);
     }
+
+    fontCount++;
+    return;
 }

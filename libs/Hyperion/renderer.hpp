@@ -11,6 +11,7 @@
 
 #include <cmath>
 #include "math.hpp"
+#include <cstdlib>
 
 #include <thread>
 #include <iostream>
@@ -46,17 +47,17 @@ void setPixelOnScreen(int x, int y, Color3 colorIn)
     }
 }
 
-Color3 getGradient(const Color3 background, const Color3 lineColor, double coverage)
+Color3 getGradient(const Color3& background,const Color3& lineColor,double coverage)
 {
     coverage = std::clamp(coverage, 0.0, 1.0);
 
-    Color3 result{};
+    const auto blend = [coverage](std::uint8_t bg, std::uint8_t line)
+    {
+        const double value = bg + (static_cast<double>(line) - bg) * coverage;
+        return static_cast<std::uint8_t>(std::clamp(std::lround(value), 0L, 255L));
+    };
 
-    result.red = static_cast<int>(std::lround(background.red+(lineColor.red - background.red)*coverage));
-    result.green = static_cast<int>(std::lround(background.green+(lineColor.green - background.green)*coverage));
-    result.blue = static_cast<int>(std::lround(background.blue+(lineColor.blue - background.blue)*coverage));
-
-    return result;
+    return {blend(background.red,lineColor.red),blend(background.green,lineColor.green),blend(background.blue, lineColor.blue)};
 }
 
 
@@ -94,79 +95,98 @@ void drawCircle(Vector2 midpoint,int radius, Color3 color)
 
 void drawLine(Vector2 vec1, Vector2 vec2, Color3 color)
 {
+    const double x1 = static_cast<double>(vec1.x);
+    const double y1 = static_cast<double>(vec1.y);
+    const double dx = static_cast<double>(vec2.x) - x1;
+    const double dy = static_cast<double>(vec2.y) - y1;
 
-    double m = static_cast<double>(vec2.y - vec1.y) / static_cast<double>(vec2.x - vec1.x);
-    double c = vec1.y - m * vec1.x;
-    
-    if (abs(vec2.y - vec1.y) < abs(vec2.x - vec1.x))
+    const double span = std::max(std::abs(dx), std::abs(dy));
+
+    if (span == 0.0)
     {
-        for (int x = vec1.x; x <= vec2.x; x++)
-        {
-            double exacty = static_cast<double>(m * x + c);
-
-            int y = static_cast<int>(floor(exacty));
-
-            double dist = exacty - std::floor(exacty);
-
-            Color3 grad1Color = getGradient(getPixelColor(x,y),color,1-dist);
-            Color3 grad2Color = getGradient(getPixelColor(x,y+1),color,dist);
-
-            setPixelOnScreen(x, y, grad1Color);
-            setPixelOnScreen(x, y+1, grad2Color);
-        }
+        setPixelOnScreen(vec1.x, vec1.y, color);
+        return;
     }
-    else
+
+    const int steps = static_cast<int>(std::ceil(span));
+    const bool xMajor = std::abs(dx) >= std::abs(dy);
+
+    for (int step = 0; step <= steps; ++step)
     {
-        for (int y = vec1.y; y <= vec2.y; y++)
+        const double t = static_cast<double>(step) / steps;
+        const double exactX = x1 + dx * t;
+        const double exactY = y1 + dy * t;
+
+        if (xMajor)
         {
-            double exactx = static_cast<double>((y - c) / m);
+            const int x = static_cast<int>(std::floor(exactX));
+            const int y = static_cast<int>(std::floor(exactY));
+            const double fraction = exactY - y;
 
-            int x = static_cast<int>(floor(exactx));
+            setPixelOnScreen(
+                x, y,
+                getGradient(getPixelColor(x, y), color, 1.0 - fraction));
+            setPixelOnScreen(
+                x, y + 1,
+                getGradient(getPixelColor(x, y + 1), color, fraction));
+        }
+        else
+        {
+            const int x = static_cast<int>(std::floor(exactX));
+            const int y = static_cast<int>(std::floor(exactY));
+            const double fraction = exactX - x;
 
-            double dist = exactx - std::floor(exactx);
-
-            Color3 grad1Color = getGradient(getPixelColor(x,y),color,1-dist);
-            Color3 grad2Color = getGradient(getPixelColor(x+1,y),color,dist);
-
-            setPixelOnScreen(x, y, grad1Color);
-            setPixelOnScreen(x+1, y, grad2Color);
+            setPixelOnScreen(
+                x, y,
+                getGradient(getPixelColor(x, y), color, 1.0 - fraction));
+            setPixelOnScreen(
+                x + 1, y,
+                getGradient(getPixelColor(x + 1, y), color, fraction));
         }
     }
 }
 
 void bresenhamLineDraw(int x1, int y1, int x2, int y2, Color3 color)
 {
-    double m = static_cast<double>(y2 - y1) / static_cast<double>(x2 - x1);
+    const int dx = std::abs(x2 - x1);
+    const int sx = (x1 < x2) ? 1 : -1;
+    const int dy = -std::abs(y2 - y1);
+    const int sy = (y1 < y2) ? 1 : -1;
+    int err = dx + dy;
 
-    double c = y1 - m * x1;
-
-    for (int x = x1; x <= x2; x++)
+    while (true)
     {
-        int y = static_cast<int>(round(m * x + c));
-        setPixelOnScreen(x, y, color);
+        setPixelOnScreen(x1, y1, color);
+
+        if (x1 == x2 && y1 == y2)
+            break;
+
+        const int e2 = 2 * err;
+
+        if (e2 >= dy)
+        {
+            err += dy;
+            x1 += sx;
+        }
+        if (e2 <= dx)
+        {
+            err += dx;
+            y1 += sy;
+        }
     }
 }
 
-/*void drawRectangle(Vector2 position,int sizeX,int sizeY,bool filled,Color3 color)
+
+void drawRectangle(Vector2 position,int sizeX,int sizeY,Color3 color)
 {
-    if (filled == true)
+    for (int x=0;x<sizeX;x++)
     {
-        for (int x=0;x<sizeX;x++)
+        for (int y=0;y<sizeY;y++)
         {
-            for (int y=0;y<sizeY;y++)
-            {
-                setPixelOnScreen(x,y,color);
-            }
+            setPixelOnScreen(x+position.x,y+position.y,color);
         }
     }
-    else
-    {
-        //these gotta have vector2 inputs
-        //drawLine(std::round(position.x),position.x+sizeX,color)
-        //drawLine(,color)
-        //drawLine(position.x)
-    }
-} */
+}
 
 void drawCube(Vector2 rootPos, Color3 color); // define ts later bro i dont wanna rn
 
