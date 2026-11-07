@@ -17,6 +17,21 @@ struct Vector3
         y = yIn;
         z = zIn;
     }
+
+    Vector3 operator+(Vector3 vec2)
+    {
+        return Vector3(x+vec2.x,y+vec2.y,z+vec2.z);
+    }
+
+    Vector3 operator*(double multiplier) const
+    {
+        return {x*multiplier,y*multiplier,z*multiplier};
+    }
+
+    friend Vector3 operator*(double multiplier, Vector3 v)
+    {
+        return v*multiplier;
+    }
 };
 
 struct Vector2
@@ -29,33 +44,19 @@ struct Vector2
         x = xIn;
         y = yIn;
     }
+
+    Vector2 operator+(Vector2 vec2)
+    {
+        return Vector2(x+vec2.x,y+vec2.y);
+    }
+
+    Vector2 operator*(double multiplier) const
+    {
+        return {x*multiplier,y*multiplier};
+    }
+
+    friend Vector2 operator*(double multiplier, Vector2 v)
+    {
+        return v*multiplier;
+    }
 };
-
-double vectorDotProduct(Vector3 vec1, Vector3 vec2)
-{
-    double output {vec1.x*vec2.x+vec1.y*vec2.y+vec1.z*vec2.z};
-    return output;
-}
-
-Vector3 vectorAdd(Vector3 vec1, Vector3 vec2)
-{
-    Vector3 output{};
-    output.x = vec1.x+vec2.x;
-    output.y = vec1.y+vec2.y;
-    output.z = vec1.z+vec2.z;
-    return output;
-}
-
-double vectorDotProduct(Vector2 vec1, Vector2 vec2)
-{
-    double output {vec1.x*vec2.x+vec1.y*vec2.y};
-    return output;
-}
-
-Vector2 vectorAdd(Vector2 vec1, Vector2 vec2)
-{
-    Vector2 output{};
-    output.x = vec1.x+vec2.x;
-    output.y = vec1.y+vec2.y;
-    return output;
-}

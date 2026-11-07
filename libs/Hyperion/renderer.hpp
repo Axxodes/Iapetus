@@ -176,6 +176,18 @@ void bresenhamLineDraw(int x1, int y1, int x2, int y2, Color3 color)
     }
 }
 
+void drawBezierCurve(Vector2 pos1, Vector2 pos2, Vector2 anchor, int res)
+{
+    for(int i{0};i<res;i++)
+    {
+        double t;
+        if(i!=0) t = static_cast<double>(i)/res;
+        else t=0;
+
+        Vector2 pixelPos = (1-t)*((1-t)*pos1+(t*anchor))+t*((1-t)*anchor+t*pos2);
+        setPixelOnScreen(pixelPos.x,pixelPos.y,Color3(255,255,255));
+    }
+}
 
 void drawRectangle(Vector2 position,int sizeX,int sizeY,Color3 color)
 {

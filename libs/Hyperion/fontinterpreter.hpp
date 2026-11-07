@@ -12,10 +12,18 @@ struct Line
     Vector2 end;
 };
 
+struct Curve
+{
+    Vector2 start;
+    Vector2 end;
+    Vector2 anchor;
+};
+
 struct Character
 {
     uint8_t fontId {};
     std::vector<Line> lines;
+    std::vector<Curve> curves;
 
     void drawCharToScreen(int size, Vector2 origin)
     {
@@ -24,35 +32,56 @@ struct Character
         {
             bresenhamLineDraw((lines[i].start.x*size+origin.x),(lines[i].start.y*size+origin.y),(lines[i].end.x*size+origin.x),(lines[i].end.y*size+origin.y),Color3{255,255,255});
         }
+        int vector2Size = static_cast<int>(curves.size());
+        for(int i{0};i<vector2Size;i++)
+        {
+            drawBezierCurve(curves[i].start*size+origin,curves[i].end*size+origin,curves[i].anchor*size+origin,10*size);
+        }
     }
 };
 
-struct LetterArray
+struct Font
 {
     std::vector<Character> characters;
 };
 
-LetterArray letterArray {};
-
-void drawAllFontChars(Vector2 origin)
+void drawText(Vector2 origin,Font* font,int fontSize,const char* text)
 {
-    for(size_t i{0};i<letterArray.characters.size();i++)
+    bool doneParsing{false};
+    int currentLetter{0};
+    while(doneParsing==false)
     {
-        letterArray.characters[i].drawCharToScreen(3,Vector2(origin.x+(13*i),origin.y/*+(13*static_cast<int>(i/10))*/));
+        char character = text[currentLetter];
+        if(!character)
+        {
+            doneParsing=true;
+            continue;
+        }
+        int value = character - 'A';
+        font->characters[value].drawCharToScreen(fontSize,Vector2(origin.x+((4*fontSize)*currentLetter),origin.y));
+        currentLetter++;
     }
 }
 
-void constructFontChar(int fontId,std::vector<Line> lines)
+void drawAllFontChars(Vector2 origin,Font* font,int fontSize)
+{
+    for(size_t i{0};i<font->characters.size();i++)
+    {
+        font->characters[i].drawCharToScreen(fontSize,Vector2(origin.x+((4*fontSize)*i),origin.y/*+(13*static_cast<int>(i/10))*/));
+    }
+}
+
+void constructFontChar(int fontId,std::vector<Line> lines,std::vector<Curve> curves,Font* font)
 {
     Character character {};
     character.lines = lines;
+    character.curves = curves;
     character.fontId = fontId;
 
-    // character.drawCharToScreen(5,Vector2(20,20));
-    letterArray.characters.push_back(character);
+    font->characters.push_back(character);
 }
 
-void openFont(const wchar_t* name)
+void openFont(const wchar_t* name, Font* font)
 {
     auto fileName = std::wstring(name) + L".txt";
     static int fontCount {1};
@@ -77,8 +106,9 @@ void openFont(const wchar_t* name)
 
     for(int count{0};count<totalGlyphs;count++)
     {
-        // change this so it advances to the next line, every iteration.
         int totalLines {0};
+        int totalThings {0};
+        int totalCurves {0};
 
         for(size_t i{0};i<fileBuffer.used;i++)
         {
@@ -87,9 +117,13 @@ void openFont(const wchar_t* name)
                 continue;
             }
             char letter = static_cast<char>(fileBuffer.memory[i]);
-            if(letter == ',')
+            if(letter == ';')
             {
-                totalLines++;
+                totalThings++;
+            }
+            if(letter == 'b')
+            {
+                totalCurves++;
             }
             if(letter == '\n')
             {
@@ -97,11 +131,17 @@ void openFont(const wchar_t* name)
             }
         }
 
+        totalLines = totalThings-totalCurves;
+
         std::vector<Line> letterLines(totalLines);
+        std::vector<Curve> letterCurves(totalCurves);
 
         bool onXCoord {true};
         bool onStartCoord {true};
+        int curveStage{0}; //if 0, there isnt a curve
+
         int currentLine {0};
+        int currentCurve {0};
 
         for(size_t i{1};i<fileBuffer.used;i++)
         {
@@ -109,6 +149,7 @@ void openFont(const wchar_t* name)
             {
                 continue;
             }
+
             char character = static_cast<char>(fileBuffer.memory[i]);
 
             if (character >= '0' && character <= '9')
@@ -117,32 +158,80 @@ void openFont(const wchar_t* name)
 
                 if(onXCoord == true)
                 {
-                    if(onStartCoord == true)
+                    if(curveStage==0)
                     {
-                        letterLines[currentLine].start.x = value+1;
+                        if(onStartCoord == true)
+                        {
+                            letterLines[currentLine].start.x = value+1;
+                        }
+                        else
+                        {
+                            letterLines[currentLine].end.x = value+1;
+                        }
                     }
                     else
                     {
-                        letterLines[currentLine].end.x = value+1;
+                        if(curveStage==1)
+                        {
+                            letterCurves[currentCurve].start.x = value+1;
+                        }
+                        if(curveStage==2)
+                        {
+                            letterCurves[currentCurve].end.x = value+1;
+                        }
+                        if(curveStage==3)
+                        {
+                            letterCurves[currentCurve].anchor.x = value+1;
+                        }
                     }
                     onXCoord = false;
                 }
                 else
                 {
-                    if(onStartCoord == true)
+                    if(curveStage==0)
                     {
-                        letterLines[currentLine].start.y = value+1;
-                        onStartCoord = false;
+                        if(onStartCoord == true)
+                        {   
+                            letterLines[currentLine].start.y = value+1;
+                            onStartCoord = false;
+                        }
+                        else
+                        {
+                            letterLines[currentLine].end.y = value+1;
+                            onStartCoord = true;
+                            currentLine++;
+                        }
                     }
                     else
                     {
-                        letterLines[currentLine].end.y = value+1;
-                        onStartCoord = true;
-                        currentLine++;
+                        if(curveStage==1)
+                        {
+                            letterCurves[currentCurve].start.y = value+1;
+                        }
+                        if(curveStage==2)
+                        {
+                            letterCurves[currentCurve].end.y = value+1;       
+                        }
+                        if(curveStage==3)
+                        {
+                            letterCurves[currentCurve].anchor.y = value+1;
+                            curveStage=0;
+                            onXCoord = true;
+                            currentCurve++;
+                            continue;
+                        }
+                        curveStage++;
                     }
                     onXCoord = true;
                 }
+
+                continue;
             }
+            if (character == 'b')
+            {
+                curveStage = 1;
+            }
+
             if (character == '\n')
             {
                 prevGlyphEnd = static_cast<int>(i) + 1;
@@ -150,7 +239,7 @@ void openFont(const wchar_t* name)
                 break;
             }
         }
-        constructFontChar(fontCount,letterLines);
+        constructFontChar(fontCount,letterLines,letterCurves,font);
     }
 
     fontCount++;

@@ -48,7 +48,7 @@ FrameBuffer Buffer {};
 
 int createdButtonAmount {0};
 
-// functions
+// functions			
 
 void quitApp()
 {
@@ -143,9 +143,12 @@ LRESULT CALLBACK windows_window_callback(HWND window, UINT msg,
 			if (wParam == VK_SHIFT)
 			{
 				addButton(50,50,50,50,Color3{255,255,255},buttonPrint);
-				
-				openFont(L"Default");
-				drawAllFontChars(Vector2(0,0));
+
+				int fontSize{3};
+
+				Font font;
+				openFont(L"Default",&font);
+				drawText(Vector2(10,10),&font,fontSize,"PROPERTIES");
 
 				returnFrame();
 			}
